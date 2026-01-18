@@ -1,0 +1,6 @@
+@KauriBoardApi_HostAddress = http://localhost:5017
+
+GET {{KauriBoardApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
