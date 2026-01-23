@@ -33,13 +33,13 @@ namespace Backend.Controllers
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == request.Email);
             if (user == null)
             {
-                return Unauthorized("Invalid email or password.");
+                return Unauthorized(new { message = "Invalid email or password." });
             }
 
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
             if (result == PasswordVerificationResult.Failed)
             {
-                return Unauthorized("Invalid email or password.");
+                return Unauthorized(new { message = "Invalid email or password." });
             }
 
             var token = _jwtTokenService.GenerateToken(user);
@@ -53,13 +53,14 @@ namespace Backend.Controllers
             var existingUser = await _db.Users.AnyAsync(u => u.Email == register.Email);
             if (existingUser)
             {
-                return BadRequest("Email is already in use.");
+                return BadRequest(new { message = "Email is already registered." });
             }
 
             var user = new User
             {
                 Email = register.Email,
                 Name = register.Name,
+                Role = "User"
             };
 
             user.PasswordHash = _passwordHasher.HashPassword(user, register.Password);

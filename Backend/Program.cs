@@ -11,7 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
 var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"] ?? "default");
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins, policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddDbContext<KauriContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("KauriDB") ?? 
@@ -52,6 +62,8 @@ app.MapGet("/test/users", async (KauriContext db) =>
     return await db.Users.ToListAsync();
 });
 
+
+app.UseCors(MyAllowSpecificOrigins);
 app.UseHttpsRedirection();
 
 app.UseAuthentication();

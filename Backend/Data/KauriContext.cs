@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Backend.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -23,12 +24,36 @@ namespace Backend.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            var hasher = new PasswordHasher<User>();
+            var admin = new User
+            {
+                Id = 1,
+                Name = "admin",
+                Role = "Admin",
+                Email = "admin@gmail.com"
+            };
+
+            admin.PasswordHash = hasher.HashPassword(admin, "Piggy712!0");
+
             modelBuilder.Entity<User>(u =>
             {
-                u.HasData(
-                    new User { Id = 1, Name = "admin", Role = "Admin", Email = "admin@gmail.com", PasswordHash = "hashedpassword" }
-                );
+                u.HasData(admin);
             });
+
+            modelBuilder.Entity<ProjectUser>()
+                .HasOne(pu => pu.User)
+                .WithMany()
+                .HasForeignKey(pu => pu.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProjectUser>()
+                .HasOne(pu => pu.Project)
+                .WithMany(p => p.Users)
+                .HasForeignKey(pu => pu.ProjectId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<ProjectUser>()
+                .HasKey(pu => new { pu.ProjectId, pu.UserId });
 
             modelBuilder.Entity<Project>(p =>
             {
@@ -36,6 +61,7 @@ namespace Backend.Data
                     new Project { Id = 1, Name = "Initial Project", Description = "This is the first project.", CreatedAt = DateTime.UtcNow, CreatedByUserId = 1 }
                 );
             });
+
 
             modelBuilder.Entity<TaskItem>(t =>
             {

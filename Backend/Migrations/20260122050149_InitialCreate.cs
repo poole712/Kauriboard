@@ -50,6 +50,31 @@ namespace KauriBoardApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProjectUsers",
+                columns: table => new
+                {
+                    ProjectId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProjectUsers", x => new { x.ProjectId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_ProjectUsers_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProjectUsers_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TaskItems",
                 columns: table => new
                 {
@@ -121,17 +146,17 @@ namespace KauriBoardApi.Migrations
             migrationBuilder.InsertData(
                 table: "Projects",
                 columns: new[] { "Id", "CreatedAt", "CreatedByUserId", "Description", "Name" },
-                values: new object[] { 1, new DateTime(2026, 1, 18, 22, 31, 17, 281, DateTimeKind.Utc).AddTicks(1108), 1, "This is the first project.", "Initial Project" });
+                values: new object[] { 1, new DateTime(2026, 1, 22, 5, 1, 49, 286, DateTimeKind.Utc).AddTicks(4581), 1, "This is the first project.", "Initial Project" });
 
             migrationBuilder.InsertData(
                 table: "TaskItems",
                 columns: new[] { "Id", "AssignedToUserId", "CreatedAt", "Description", "Name", "ProjectId", "Status", "UserId" },
-                values: new object[] { 1, 1, new DateTime(2026, 1, 18, 22, 31, 17, 281, DateTimeKind.Utc).AddTicks(1123), "This is the first task.", "Initial Task", 1, 0, null });
+                values: new object[] { 1, 1, new DateTime(2026, 1, 22, 5, 1, 49, 286, DateTimeKind.Utc).AddTicks(4615), "This is the first task.", "Initial Task", 1, 0, null });
 
             migrationBuilder.InsertData(
                 table: "Comments",
                 columns: new[] { "Id", "CreatedAt", "Message", "TaskItemId", "UserId" },
-                values: new object[] { 1, new DateTime(2026, 1, 18, 22, 31, 17, 281, DateTimeKind.Utc).AddTicks(4698), "This is the first comment.", 1, 1 });
+                values: new object[] { 1, new DateTime(2026, 1, 22, 5, 1, 49, 286, DateTimeKind.Utc).AddTicks(8310), "This is the first comment.", 1, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Comments_TaskItemId",
@@ -147,6 +172,11 @@ namespace KauriBoardApi.Migrations
                 name: "IX_Projects_CreatedByUserId",
                 table: "Projects",
                 column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProjectUsers_UserId",
+                table: "ProjectUsers",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TaskItems_AssignedToUserId",
@@ -169,6 +199,9 @@ namespace KauriBoardApi.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "ProjectUsers");
 
             migrationBuilder.DropTable(
                 name: "TaskItems");

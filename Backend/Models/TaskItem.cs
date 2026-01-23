@@ -28,6 +28,8 @@ namespace Backend.Models
         public int AssignedToUserId { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
 
         //Navigation properties
         public User AssignedToUser { get; set; }

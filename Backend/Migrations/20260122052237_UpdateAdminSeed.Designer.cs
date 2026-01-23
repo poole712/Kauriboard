@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauriBoardApi.Migrations
 {
     [DbContext(typeof(KauriContext))]
-    [Migration("20260118223117_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260122052237_UpdateAdminSeed")]
+    partial class UpdateAdminSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,7 +59,7 @@ namespace KauriBoardApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 1, 18, 22, 31, 17, 281, DateTimeKind.Utc).AddTicks(4698),
+                            CreatedAt = new DateTime(2026, 1, 22, 5, 22, 36, 950, DateTimeKind.Utc).AddTicks(6750),
                             Message = "This is the first comment.",
                             TaskItemId = 1,
                             UserId = 1
@@ -100,11 +100,30 @@ namespace KauriBoardApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 1, 18, 22, 31, 17, 281, DateTimeKind.Utc).AddTicks(1108),
+                            CreatedAt = new DateTime(2026, 1, 22, 5, 22, 36, 949, DateTimeKind.Utc).AddTicks(9766),
                             CreatedByUserId = 1,
                             Description = "This is the first project.",
                             Name = "Initial Project"
                         });
+                });
+
+            modelBuilder.Entity("Backend.Models.ProjectUser", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProjectId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProjectUsers");
                 });
 
             modelBuilder.Entity("Backend.Models.TaskItem", b =>
@@ -155,7 +174,7 @@ namespace KauriBoardApi.Migrations
                         {
                             Id = 1,
                             AssignedToUserId = 1,
-                            CreatedAt = new DateTime(2026, 1, 18, 22, 31, 17, 281, DateTimeKind.Utc).AddTicks(1123),
+                            CreatedAt = new DateTime(2026, 1, 22, 5, 22, 36, 949, DateTimeKind.Utc).AddTicks(9803),
                             Description = "This is the first task.",
                             Name = "Initial Task",
                             ProjectId = 1,
@@ -197,7 +216,7 @@ namespace KauriBoardApi.Migrations
                             Id = 1,
                             Email = "admin@gmail.com",
                             Name = "admin",
-                            PasswordHash = "hashedpassword",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAAVlNY3BpNBa7gceYzbSRB7fGufJIjJYHTSWMYtiYp75C/0gWeotU5GR/ql0QLk6g==",
                             Role = "Admin"
                         });
                 });
@@ -205,7 +224,7 @@ namespace KauriBoardApi.Migrations
             modelBuilder.Entity("Backend.Models.Comment", b =>
                 {
                     b.HasOne("Backend.Models.TaskItem", "TaskItem")
-                        .WithMany()
+                        .WithMany("Comments")
                         .HasForeignKey("TaskItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -230,6 +249,25 @@ namespace KauriBoardApi.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedByUser");
+                });
+
+            modelBuilder.Entity("Backend.Models.ProjectUser", b =>
+                {
+                    b.HasOne("Backend.Models.Project", "Project")
+                        .WithMany("Users")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Backend.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Project");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Backend.Models.TaskItem", b =>
@@ -258,6 +296,13 @@ namespace KauriBoardApi.Migrations
             modelBuilder.Entity("Backend.Models.Project", b =>
                 {
                     b.Navigation("Tasks");
+
+                    b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("Backend.Models.TaskItem", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("Backend.Models.User", b =>
