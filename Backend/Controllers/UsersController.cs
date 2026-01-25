@@ -6,6 +6,7 @@ using Backend.Models;
 using Backend.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -39,7 +40,7 @@ namespace Backend.Controllers
         [HttpPut("me")]
         public IActionResult UpdateProfile([FromBody] UpdateUserRequest updatedUser)
         {
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var user = _db.Users.FirstOrDefault(x => x.Id == userId);
 
             if (user == null)

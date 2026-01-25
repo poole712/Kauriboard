@@ -1,7 +1,7 @@
 
 function Footer() {
     return (
-        <footer>
+        <footer className="footer mt-auto py-3 bg-light text-center">
             <h4>Created by Fletcher Poole</h4>
         </footer>
     )

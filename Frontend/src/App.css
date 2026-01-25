@@ -1,3 +1,20 @@
 .kauriTree {
   width: 30%;
 }
+
+.navbar {
+  background-color:bisque;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  margin-left: 20rem;
+}
+
+.navlinks {
+  margin-right: 20rem;
+}
+
+.nav-link {
+  margin-left: 2rem;
+}

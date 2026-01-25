@@ -5,6 +5,7 @@ using Backend.Data;
 using Microsoft.AspNetCore.Authorization;
 using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Backend.Controllers
 {
@@ -47,7 +48,7 @@ namespace Backend.Controllers
         [HttpPost]
         public IActionResult CreateTask(CreateTaskRequest request)
         {
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == request.ProjectId);
 
@@ -87,7 +88,7 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == task.ProjectId);
 
             if (!isMember)
@@ -136,7 +137,7 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == task.ProjectId);
 
             if (!isMember)
@@ -174,7 +175,7 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
             var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == task.ProjectId);
 
             if (!isMember)

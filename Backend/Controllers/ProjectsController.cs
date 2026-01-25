@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Models;
@@ -39,7 +40,7 @@ namespace Backend.Controllers
         [HttpGet]
         public IActionResult GetAllProjects()
         {
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var projects = _db.ProjectUsers.Where(pu => pu.UserId == userId)
                 .Select(pu => new ProjectDTO(pu.Project.Id, pu.Project.Name, pu.Project.Description))
@@ -49,10 +50,29 @@ namespace Backend.Controllers
         }
 
         [Authorize]
+        [HttpGet("GetProjectMembers/{projectId:int}")]
+        public IActionResult GetProjectMembers(int projectId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var projectUser = _db.ProjectUsers.FirstOrDefault(pu => pu.ProjectId == projectId && pu.UserId == userId);
+            if (projectUser == null)
+            {
+                return Forbid();
+            }
+
+            var members = _db.ProjectUsers.Where(pu => pu.ProjectId == projectId)
+                .Select(pu => new ProjectMemberDTO(pu.User.Id, pu.User.Name, pu.Role))
+                .ToList();
+
+            return Ok(members);
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult CreateProject(CreateProjectRequest request)
         {
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var project = new Project
             {
@@ -80,7 +100,7 @@ namespace Backend.Controllers
         public IActionResult DeleteProject(int id)
         {
             var project = _db.Projects.SingleOrDefault(x => x.Id == id);
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             if (project == null)
             {
@@ -102,6 +122,7 @@ namespace Backend.Controllers
             return NoContent();
         }
 
+        public record ProjectMemberDTO(int Id, string Username, string Role);
         public record ProjectDTO(int Id, string Name, string Description);
         public record CreateProjectRequest(string Name, string Description);
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Backend.Data;
 using Backend.Models;
@@ -24,7 +25,7 @@ namespace Backend.Controllers
         [HttpPost]
         public IActionResult AddComment(AddCommentRequest request)
         {
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var user = _db.Users.SingleOrDefault(u => u.Id == userId);
 
@@ -60,7 +61,7 @@ namespace Backend.Controllers
         [HttpDelete("{commentId}")]
         public IActionResult DeleteComment(int commentId)
         {
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var comment = _db.Comments.SingleOrDefault(c => c.Id == commentId);
             if (comment == null)
@@ -83,7 +84,7 @@ namespace Backend.Controllers
         [HttpGet]
         public IActionResult GetAllCommentsForTask([FromQuery] int taskId)
         {
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var task = _db.TaskItems.SingleOrDefault(ta => ta.Id == taskId);
             if (task == null)
