@@ -7,6 +7,7 @@ import LoginPage from "./pages/LoginPage.tsx";
 import RegisterPage from "./pages/RegisterPage.tsx";
 import ProjectsPage from "./pages/ProjectsPage.tsx";
 import CreateProject from "./pages/CreateProject.tsx";
+import ProjectManagePage from "./pages/ProjectManagePage.tsx";
 
 
 createRoot(document.getElementById("root")!).render(
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/pages/Register" element={<RegisterPage />} />
         <Route path="/pages/Projects" element={<ProjectsPage />} />
         <Route path="/pages/CreateProject" element={<CreateProject />} />
+        <Route path="/pages/ProjectManagePage/:id" element={<ProjectManagePage />} />
       </Route>
     </Routes>
   </BrowserRouter>,

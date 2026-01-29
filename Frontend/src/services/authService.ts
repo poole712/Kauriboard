@@ -47,6 +47,66 @@ async function getprojects() {
   };
 }
 
+async function getproject(id : string) {
+  try {
+    const response = await instance.get(`/Projects/${id}`);
+    return { ok: true, data: response.data };
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return {
+      ok: false,
+      error: error.response?.data?.message || "An error occurred getting project",
+    };
+  }
+}
+
+async function gettasks(projectId : string) {
+  try {
+    const response = await instance.get(`/Tasks/${projectId}/getall`)
+    return { ok: true, data: response.data};
+  } catch (err) {
+    const error = err as AxiosError<{message: string}>;
+    return {
+      ok: false,
+      error: error.response?.data?.message || "An error occurred getting tasks",
+    };
+  }
+}
+
+async function gettask(taskId : string) {
+  try {
+    const response = await instance.get(`/Tasks/${taskId}`)
+    return { ok: true, data: response.data}
+  } catch (err) {
+    const error = err as AxiosError<{message : string}>;
+    return {
+      ok: false,
+      error: error.response?.data?.message || "An error occured getting task"
+    }
+    
+  }
+  
+}
+
+async function createtask(name : string, description : string, status : string, assignedToUserId : number, projId : string) {
+  try {
+    const response = await instance.post(`/Tasks`, {
+      ProjectId : projId,
+      name: name,
+      description: description,
+      status: status,
+      assignedToUserId: assignedToUserId
+    });
+    return { ok: true, data: response.data}
+  } catch (err) {
+    const error = err as AxiosError<{message: string}>;
+    return {
+      ok: false,
+      error: error.response?.data?.message || "An error occured posting task"
+    }
+  }
+}
+
 async function createproject(name : string, description : string) {
   try {
     const response = await instance.post("/Projects", {
@@ -80,4 +140,4 @@ function logout() {
   return instance.post("/auth/logout");
 }
 
-export { login, logout, register, getprojects, createproject, getprojectmembers };
+export { login, logout, register, getprojects, createproject, getprojectmembers, getproject, gettasks, gettask, createtask };

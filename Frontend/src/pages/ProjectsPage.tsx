@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getprojects } from '../services/authService'
 import Project from '../components/Project'
 import { useNavigate } from 'react-router'
 
 function ProjectsPage() {
-  const [projects, setProjects] = React.useState<Project[]>([])
-  const [error, setError] = React.useState('')
-  const [loading, setLoading] = React.useState(true)
+  const [projects, setProjects] = useState<Project[]>([])
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
 
   const navigate = useNavigate()
 

@@ -26,7 +26,11 @@ namespace Backend.Controllers
         [HttpGet("{id:int}")]
         public IActionResult GetProject(int id)
         {
-            var project = _db.Projects.FirstOrDefault(x => x.Id == id);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var project = _db.ProjectUsers.Where(pu => pu.UserId == userId && pu.ProjectId == id)
+            .Select(pu => pu.Project)
+            .FirstOrDefault();
 
             if (project == null)
             {

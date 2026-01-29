@@ -31,7 +31,7 @@ namespace Backend.Controllers
                 return NotFound();
             }
 
-            var userId = int.Parse(User.FindFirst("sub")!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             // Check if the project users join table has an entry for this user and the task's project
             var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == task.ProjectId);
@@ -42,6 +42,24 @@ namespace Backend.Controllers
             }
 
             return Ok(new TaskDTO(task.Id, task.Name, task.Description, task.Status.ToString(), task.ProjectId, task.CreatedAt, task.AssignedToUserId));
+        }
+
+        [Authorize]
+        [HttpGet("{projectId:int}/getall")]
+        public IActionResult GetAllTasks(int projectId)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == projectId);
+
+            if(!isMember)
+            {
+                return NotFound();
+            }
+
+            var tasks = _db.TaskItems.Where(t => t.ProjectId == projectId).ToList();
+
+            return Ok(tasks);
         }
 
         [Authorize]
@@ -62,6 +80,7 @@ namespace Backend.Controllers
                 ProjectId = request.ProjectId,
                 Name = request.Name,
                 Description = request.Description,
+                AssignedToUserId = request.AssignedToUserId
             };
 
             if (!Enum.TryParse<TaskCurrentStatus>(request.Status, out var status))
@@ -190,7 +209,7 @@ namespace Backend.Controllers
         }
 
         public record AssignUserRequest(int AssignedToUserId);
-        public record CreateTaskRequest(string Name, string Description, string Status, int AssignedToUser, int ProjectId);
+        public record CreateTaskRequest(string Name, string Description, string Status, int AssignedToUserId, int ProjectId);
         public record UpdateTaskRequest(string? Name, string? Description, string? Status, int? AssignedToUserId);
         public record TaskDTO(int Id, string Name, string Description, string Status, int ProjectId, DateTime CreatedAt, int? AssignedToUserId = null);
     }

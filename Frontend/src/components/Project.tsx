@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react'
 import { getprojectmembers } from '../services/authService'
+import "../index.css";
+import { useNavigate } from 'react-router';
 
 function Project({ id, name, description }: { id: number; name: string; description: string }) {
+
   const [members, setMembers] = useState([])
   const [showManage, setShowManage] = useState(false)
+
+  const navigate = useNavigate();
 
   function hovering(hovered: boolean, event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (hovered) {
       setShowManage(true)
-      event.currentTarget.classList.add('bg-primary')
+      event.currentTarget.classList.add('projectHovered')
     } else {
       setShowManage(false)
-      event.currentTarget.classList.remove('bg-primary')
+      event.currentTarget.classList.remove('projectHovered')
     }
   }
 
@@ -41,12 +46,9 @@ function Project({ id, name, description }: { id: number; name: string; descript
           <h3 className="mx-2 d-flex">{name}</h3>
           <p className="mx-2 text-start col-5 d-flex">{description}</p>
         </div>
-        <h5
-          style={{ visibility: showManage ? 'visible' : 'hidden', border: 'dashed' }}
-          className="d-flex mx-auto rounded rounded-3 align-self-center p-3 px-5"
-        >
-          Manage
-        </h5>
+        <button
+          style={{ visibility: showManage ? 'visible' : 'hidden', height: '40px', alignSelf: 'center' }}
+          className="btn btn-secondary col-2 mx-3" onClick={() => navigate(`/pages/projectmanagepage/${id}`)}>Manage</button>
         <div className="p-2 col-3">
           <h5 className="mx-2 d-flex">Members</h5>
           <div className="mx-2 d-flex">
