@@ -2,6 +2,16 @@
   width: 30%;
 }
 
+.main-content {
+  background-color: #f8f9fa;
+  padding-bottom: 80px;
+}
+
+.project-main {
+  background-color: #f8f9fa;
+  
+}
+
 .navbar {
   background-color:bisque;
 }
@@ -34,5 +44,22 @@
 
 .task {
   background-color:bisque !important;
+}
+
+.task-container {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  padding-bottom: 2rem;
+  height: 225px;
+}
+
+.backlog-box {
+  display: flex;
+  flex-direction: column;
+  height: 350px;
+  width: 350px;
+  background-color:aliceblue;
+  border-radius: 5px;
 }
 

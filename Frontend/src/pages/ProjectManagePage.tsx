@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { getproject, getprojectmembers, gettasks } from '../services/authService'
 import Task from '../components/Task'
 import CreateTask from '../components/CreateTask'
+import BacklogBox from '../components/BacklogBox'
 
 function ProjectManagePage() {
   const { id } = useParams() as { id: string }
@@ -59,9 +60,9 @@ function ProjectManagePage() {
   }, [id])
 
   return (
-    <>
-      <h1 className="mt-4">Project Management</h1>
-      <div className="card container vh-100 mt-4">
+    <div className="m-3 project-main">
+      <h1 className="text-center">Project Management</h1>
+      <div className="card container mt-4">
         <div className="d-flex flex-column col-12">
           <h2 className="p-3 m-3 rounded rounded-3 d-flex bg-light">{project?.name}</h2>
           <div className="d-flex flex-row ">
@@ -78,23 +79,32 @@ function ProjectManagePage() {
             </div>
           </div>
           <div className="bg-light m-3 rounded rounded-3 d-flex justify-content-between align-items-center">
-            <h3 className="m-3 p-2">Tasks</h3>
-            <button className="btn btn-primary m-3" onClick={() => setCreatingTask(true)}>
-              Create New Task
-            </button>
+            <h3 className="m-3 p-2">Task Board</h3>
           </div>
-          <div hidden={!creatingTask} className="mb-3">
-            <CreateTask onShow={onShow} projId={id} members={members} loadTasks={loadTasks} />
-          </div>
-          <div className="task-scroll-container m-3 p-3 rounded rounded-1 bg-light">
-              {tasks.map(task => (
-                <Task key={task.id} id={task.id} name={task.name} description={task.description} />
-              ))}
+          <div className="d-flex flex-row justify-content-around mx-3 mb-3">
+            <BacklogBox title="To Do" />
+            <BacklogBox title="In Progress" />
+            <BacklogBox title="Done" />
           </div>
         </div>
+        <div className='d-flex justify-content-between text-start mt-3 mb-0 rounded rounded-3 mx-3 bg-light p-3'>
+          <h4 className="">Task Backlog</h4>
+          <button className="btn btn-primary m-3" onClick={() => setCreatingTask(true)}>
+            Create New Task
+          </button>
+        </div>
+        <div className="task-container bg-light rounded rounded-3 p-3 mx-3">
+          <div className="d-flex flex-row">
+            {tasks.map(task => (
+              <Task key={task.id} id={task.id} name={task.name} description={task.description} />
+            ))}
+          </div>
+        </div>
+        <div hidden={!creatingTask} className="mb-3">
+          <CreateTask onShow={onShow} projId={id} members={members} loadTasks={loadTasks} />
+        </div>
       </div>
-    </>
+    </div>
   )
 }
-
 export default ProjectManagePage
