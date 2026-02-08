@@ -8,9 +8,9 @@ type Member = {
   role: string
 }
 
-function CreateTask({ onShow, projId, members, loadTasks }: { onShow: () => void; projId: string; members?: Member[]; loadTasks: () => void }) {
+function CreateTask({ onShow, projId, members, refresh }: { onShow: () => void; projId: string; members?: Member[]; refresh () : void }) {
   const [name, setName] = useState('')
-  const [status] = useState('ToDo')
+  const [status] = useState('Unassigned')
   const [description, setDescription] = useState('')
   const [assignedMember, setAssignedMember] = useState<Member>()
 
@@ -19,7 +19,7 @@ function CreateTask({ onShow, projId, members, loadTasks }: { onShow: () => void
     const response = await createtask(name, description, status, assignedMember!.id, projId)
     console.log(assignedMember)
     if (response.ok) {
-      loadTasks()
+      refresh()
       onShow()
       console.log('Task Created:', { name, description })
     } else {
@@ -59,7 +59,7 @@ function CreateTask({ onShow, projId, members, loadTasks }: { onShow: () => void
         <ul className="dropdown-menu">
           {members?.map(member => (
             <li key={member.id}>
-              <a className="dropdown-item" href="#" onClick={() => setAssignedMember(member)}>
+              <a className="dropdown-item" onClick={() => setAssignedMember(member)}>
                 {member.username}
               </a>
             </li>

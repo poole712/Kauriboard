@@ -63,6 +63,29 @@ namespace Backend.Controllers
         }
 
         [Authorize]
+        [HttpGet("{projectId:int}/status/{status}")]
+        public IActionResult GetTasksByStatus(int projectId, string status)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+
+            var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == projectId);
+
+            if (!isMember)
+            {
+                return NotFound();
+            }
+
+            if (!Enum.TryParse<TaskCurrentStatus>(status, out var parsedStatus))
+            {
+                return BadRequest("Invalid status value.");
+            }
+
+            var tasks = _db.TaskItems.Where(t => t.ProjectId == projectId && t.Status == parsedStatus).ToList();
+
+            return Ok(tasks);
+        }
+
+        [Authorize]
         [HttpPost]
         public IActionResult CreateTask(CreateTaskRequest request)
         {
@@ -80,7 +103,9 @@ namespace Backend.Controllers
                 ProjectId = request.ProjectId,
                 Name = request.Name,
                 Description = request.Description,
-                AssignedToUserId = request.AssignedToUserId
+                AssignedToUserId = request.AssignedToUserId,
+                Status = TaskCurrentStatus.Unassigned,
+                CreatedAt = DateTime.UtcNow
             };
 
             if (!Enum.TryParse<TaskCurrentStatus>(request.Status, out var status))
@@ -97,7 +122,7 @@ namespace Backend.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id:int}")]
+        [HttpPut("{id}")]
         public IActionResult UpdateTask(int id, [FromBody] UpdateTaskRequest request)
         {
             var task = _db.TaskItems.SingleOrDefault(x => x.Id == id);

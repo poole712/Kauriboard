@@ -82,7 +82,7 @@ namespace Backend.Controllers
             {
                 Name = request.Name,
                 Description = request.Description,
-                CreatedByUserId = userId
+                CreatedByUserId = userId,
             };
 
             _db.Projects.Add(project);

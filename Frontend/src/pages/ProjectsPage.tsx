@@ -23,9 +23,12 @@ function ProjectsPage() {
       if (response.ok) {
         setProjects(response.data)
       } else {
-        setError(response.error || 'Error getting projects.')
+        if(response.status === 401) {
+          navigate('/pages/Login')
+          return
+        }
+        setError(`Error getting projects: ${response.error}`)
       }
-
       setLoading(false)
     }
     loadProjects()
