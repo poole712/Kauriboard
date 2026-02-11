@@ -5,8 +5,9 @@ import Task from '../components/Task'
 import CreateTask from '../components/CreateTask'
 import BacklogBox from '../components/BacklogBox'
 import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
-import { DndContext, DragOverlay } from '@dnd-kit/core'
+import { DndContext, DragOverlay, pointerWithin } from '@dnd-kit/core'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
+import ProjectMembers from '../components/ProjectMembers'
 
 function ProjectManagePage() {
   const { id } = useParams() as { id: string }
@@ -30,6 +31,7 @@ function ProjectManagePage() {
     id: string
     name: string
     description: string
+    status: string
   }
 
   type Project = {
@@ -40,12 +42,6 @@ function ProjectManagePage() {
 
   function onShow() {
     setCreatingTask(!creatingTask)
-  }
-
-  async function loadTasks() {
-    const projResponse = await getproject(id)
-    const taskResponse = await gettaskswithstatus('Unassigned', projResponse.data.id)
-    setTasks(taskResponse.data)
   }
 
   async function triggerRefresh() {
@@ -99,7 +95,7 @@ function ProjectManagePage() {
   }
 
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
       <div className="m-3 project-main">
         <h1 className="text-center">Project Management</h1>
 
@@ -109,17 +105,8 @@ function ProjectManagePage() {
 
             <div className="d-flex flex-row ">
               <p className="m-3 mx-5 text-start col-7 d-flex fs-4">Description: {project?.description}</p>
+              <ProjectMembers members={members} />
 
-              <div className="d-flex flex-column col-4 m-3 ">
-                <h5 className="align-self-center">Members:</h5>
-                <ul className="align-self-center">
-                  {members.map(member => (
-                    <li key={member.id}>
-                      {member.username} ({member.role})
-                    </li>
-                  ))}
-                </ul>
-              </div>
             </div>
 
             <div className="bg-light m-3 rounded rounded-3 d-flex justify-content-between align-items-center">
@@ -149,6 +136,7 @@ function ProjectManagePage() {
                     id={task.id}
                     name={task.name}
                     description={task.description}
+                    status={task.status}
                     hidden={activeId === task.id}
                     inBacklog={true}
                     refresh={triggerRefresh}
@@ -170,7 +158,8 @@ function ProjectManagePage() {
             id={activeId}
             name={activeTask?.name ?? tasks.find(t => t.id === activeId)?.name ?? ''}
             description={activeTask?.description ?? tasks.find(t => t.id === activeId)?.description ?? ''}
-            refresh={refresh}
+            status={activeTask?.status ?? tasks.find(t => t.id === activeId)?.status ?? ''}
+            refresh={triggerRefresh}
           />
         ) : null}
       </DragOverlay>

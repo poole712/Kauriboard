@@ -52,7 +52,7 @@ namespace Backend.Controllers
 
             var isMember = _db.ProjectUsers.Any(pu => pu.UserId == userId && pu.ProjectId == projectId);
 
-            if(!isMember)
+            if (!isMember)
             {
                 return NotFound();
             }
@@ -122,7 +122,7 @@ namespace Backend.Controllers
         }
 
         [Authorize]
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         public IActionResult UpdateTask(int id, [FromBody] UpdateTaskRequest request)
         {
             var task = _db.TaskItems.SingleOrDefault(x => x.Id == id);
@@ -146,19 +146,21 @@ namespace Backend.Controllers
             task.Description = request.Description ?? task.Description;
 
             // Use a tryparse to ensure valid enum conversion 
-            if (!Enum.TryParse<TaskCurrentStatus>(request.Status, out var status))
+            if (!Enum.TryParse<TaskCurrentStatus>(request?.Status?.Replace(" ", ""), out var status))
             {
+                Console.WriteLine($"Parsed status: {status}");
                 return BadRequest("Invalid status value.");
             }
             task.Status = status;
 
             // If AssignedToUserId is provided, check if the user is a member of the project
-            if (request.AssignedToUserId.HasValue)
+            if (request?.AssignedToUserId.HasValue == true)
             {
                 var isAssigneeMember = _db.ProjectUsers.Any(pu => pu.UserId == request.AssignedToUserId.Value && pu.ProjectId == task.ProjectId);
 
                 if (!isAssigneeMember)
                 {
+                    Console.WriteLine($"Parsed assignee status: {isAssigneeMember}");
                     return BadRequest("Assigned user must be a member of the project.");
                 }
 

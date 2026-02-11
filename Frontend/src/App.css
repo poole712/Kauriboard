@@ -64,5 +64,15 @@
   width: 350px;
   background-color:aliceblue;
   border-radius: 5px;
+  overflow-x: auto;     
+  overflow-y: auto; 
+  scrollbar-width: none;  
+  -ms-overflow-style: none;
 }
+
+.backlog-box::-webkit-scrollbar {
+  height: 0px; /* hide horizontal scrollbar */
+  width: 8px;  /* keep vertical scrollbar */
+}
+
 

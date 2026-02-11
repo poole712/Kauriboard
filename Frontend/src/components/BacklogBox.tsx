@@ -35,9 +35,9 @@ function BacklogBox({ title, projId, activeId, refresh }: { title: string; projI
       <h5 className="text-center m-3">{title}</h5>
 
       <SortableContext items={tasks.map(t => t.id)} strategy={horizontalListSortingStrategy}>
-        <div className="d-flex flex-column overflow-auto">
+        <div className="d-flex flex-column overflow-y-auto hide-y-scrollbar align-items-center" style={{ maxHeight: '400px' }}>
           {tasks.map(task => (
-            <Task key={task.id} id={task.id} name={task.name} description={task.description} inBacklog={false} hidden={activeId === task.id} refresh={refresh}/>
+            <Task key={task.id} id={task.id} name={task.name} description={task.description} status={title} inBacklog={false} hidden={activeId === task.id} refresh={refresh}/>
           ))}
         </div>
       </SortableContext>
