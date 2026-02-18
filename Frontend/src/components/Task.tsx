@@ -28,7 +28,7 @@ function Task({
   const [editedDescription, setEditedDescription] = useState(description)
 
   const classStyle = inBacklog
-    ? 'card justify-content-around d-flex mx-3 p-2 px-3 col-3 text-start bg-light task'
+    ? 'card justify-content-around d-flex mx-3 p-2 px-3 col-3 text-start align-self-start task'
     : 'card justify-content-around d-flex m-3 p-2 px-3 text-start task'
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({

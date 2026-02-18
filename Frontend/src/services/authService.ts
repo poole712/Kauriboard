@@ -180,8 +180,68 @@ async function deletetask(id : string) {
   }
 }
 
+async function inviteuser(email : string, projectId : string) {
+  try {
+    const response = await instance.post(`/Invites`, {
+      Email: email,
+      ProjectId: projectId
+    });
+    return { ok: true, data: response.data};
+  } catch (err) {
+    const error = err as AxiosError<{message: string}>;
+    return {
+      ok: false,
+      error: error.response?.data?.message || "An error occured inviting user"
+    }
+  }
+}
+
+async function acceptinvite(token : string) {
+  try {
+    const response = await instance.post(`/Invites/accept`, {
+      token: token
+    });
+    return { ok: true, data: response.data};
+  } catch (err) {
+    const error = err as AxiosError<{message: string}>;
+    return {
+      ok: false,
+      error: error.response?.data?.message || "An error occured accepting invite"
+    }
+  }
+}
+
+async function getcurrentuser() {
+  try {
+    const response = await instance.get("/Users/me");
+    return { ok: true, data: response.data };
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>;
+    return {
+      ok: false,
+      error: error.response?.data?.message || "An error occurred getting current user",
+    };
+  }
+}
+
+async function removemember(projId : string, userId : string) {
+  try {
+    const response = await instance.post("/Projects/RemoveMember", {
+      projId : projId,
+      userId : userId
+    });
+    return { ok : true, data : response.data}
+  } catch (err) {
+    const error = err as AxiosError<{message : string}>;
+    return { 
+      ok : false, 
+      message : error.response?.data?.message || 'An error occured removing user'}
+  }
+}
+
 function logout() {
   return instance.post("/auth/logout");
 }
 
-export { login, logout, register, getprojects, createproject, getprojectmembers, getproject, gettasks, gettask, createtask, gettaskswithstatus, updatetask, deletetask };
+export { login, logout, register, getprojects, createproject, getprojectmembers, getproject, gettasks, 
+        gettask, createtask, gettaskswithstatus, updatetask, deletetask, inviteuser, acceptinvite, getcurrentuser, removemember };

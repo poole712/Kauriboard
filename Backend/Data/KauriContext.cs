@@ -16,6 +16,7 @@ namespace Backend.Data
         public DbSet<TaskItem> TaskItems { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<ProjectUser> ProjectUsers { get; set; }
+        public DbSet<Invite> Invites { get; set; }
 
         public KauriContext(DbContextOptions<KauriContext> options) : base(options)
         {
@@ -34,6 +35,12 @@ namespace Backend.Data
             };
 
             admin.PasswordHash = hasher.HashPassword(admin, "Piggy712!0");
+
+            modelBuilder.Entity<Invite>(entity =>
+            {
+                entity.Property(e => e.Email).IsRequired();
+                entity.Property(e => e.Token).IsRequired();
+            });
 
             modelBuilder.Entity<User>(u =>
             {

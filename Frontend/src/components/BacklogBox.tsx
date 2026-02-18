@@ -32,7 +32,7 @@ function BacklogBox({ title, projId, activeId, refresh }: { title: string; projI
 
   return (
     <div className="backlog-box" ref={setNodeRef} style={style}>
-      <h5 className="text-center m-3">{title}</h5>
+      <h5 className="backlog-box-title">{title}</h5>
 
       <SortableContext items={tasks.map(t => t.id)} strategy={horizontalListSortingStrategy}>
         <div className="d-flex flex-column overflow-y-auto hide-y-scrollbar align-items-center" style={{ maxHeight: '400px' }}>

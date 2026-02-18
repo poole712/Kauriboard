@@ -14,6 +14,12 @@ function Navbar() {
           <Link className="nav-link" to="/pages/Login">
             Login
           </Link>
+          <button className='nav-link' onClick={() => {
+            localStorage.removeItem("token");
+            window.location.href = "/pages/Login";
+          }}>
+            Logout
+          </button>
         </div>
       </nav>
     </>

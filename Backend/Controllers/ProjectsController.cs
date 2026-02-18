@@ -126,8 +126,34 @@ namespace Backend.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [HttpPost("RemoveMember")]
+        public IActionResult RemoveMember([FromBody] RemoveMemberRequest removeMemberRequest)
+        {
+            Console.WriteLine("Project: " + removeMemberRequest.projId + " UserID: " + removeMemberRequest.userId );
+            var project = _db.Projects.FirstOrDefault(p => p.Id == removeMemberRequest.projId);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var member = _db.ProjectUsers.FirstOrDefault(pu => pu.UserId == removeMemberRequest.userId && pu.ProjectId == project.Id);
+
+            if (project.CreatedByUserId != userId)
+            {
+                return Forbid("Only the project owner can remove members");
+            }
+
+            if (member == null)
+            {
+                return Forbid("Not a member or no member found");
+            }
+
+            _db.ProjectUsers.Remove(member);
+            _db.SaveChanges();
+
+            return Ok();
+        }
+
         public record ProjectMemberDTO(int Id, string Username, string Role);
         public record ProjectDTO(int Id, string Name, string Description);
         public record CreateProjectRequest(string Name, string Description);
+        public record RemoveMemberRequest(int projId, int userId);
     }
 }

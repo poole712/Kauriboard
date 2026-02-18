@@ -9,7 +9,7 @@
 
 .project-main {
   background-color: #f8f9fa;
-  
+  margin: 20px;
 }
 
 .navbar {
@@ -27,6 +27,16 @@
 
 .nav-link {
   margin-left: 2rem;
+}
+
+.member {
+  display: flex;
+  margin: 0.25rem;
+  flex-direction: row !important;
+  height: 55px !important;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
 }
 
 .projectHovered {
@@ -54,7 +64,16 @@
   overflow: visible;
   overflow-x: auto;
   padding-bottom: 2rem;
-  height: 150px;
+
+}
+
+.backlog-box-title {
+  background-color: #17a2b8;
+  color: white;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  margin-bottom: 1rem;
 }
 
 .backlog-box {

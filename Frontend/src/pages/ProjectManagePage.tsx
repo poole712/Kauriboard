@@ -38,6 +38,7 @@ function ProjectManagePage() {
     id: number
     name: string
     description: string
+    createdByUserId: number
   }
 
   function onShow() {
@@ -96,21 +97,18 @@ function ProjectManagePage() {
 
   return (
     <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd} collisionDetection={pointerWithin}>
-      <div className="m-3 project-main">
+      <div className="project-main">
         <h1 className="text-center">Project Management</h1>
 
         <div className="card container mt-4">
           <div className="d-flex flex-column col-12">
-            <h3 className="p-3 m-3 rounded rounded-3 d-flex bg-light">{project?.name}</h3>
-
+            <h5 className="p-2 m-3 rounded rounded-3 d-flex bg-light">{project?.name}</h5>
             <div className="d-flex flex-row ">
-              <p className="m-3 mx-5 text-start col-7 d-flex fs-4">Description: {project?.description}</p>
-              <ProjectMembers members={members} />
-
+              <p className="m-2 mx-5 text-start col-7 d-flex fs-5">Description: {project?.description}</p>
+              <ProjectMembers members={members} project={project!} refresh={triggerRefresh}/>
             </div>
-
             <div className="bg-light m-3 rounded rounded-3 d-flex justify-content-between align-items-center">
-              <h4 className="mx-3 m-2 p-2">Task Board</h4>
+              <h5 className="m-2 p-2">Task Board</h5>
             </div>
 
             <div className="d-flex flex-row justify-content-around mx-3 mb-3">
@@ -120,14 +118,14 @@ function ProjectManagePage() {
             </div>
           </div>
 
-          <div className="d-flex justify-content-between text-start mt-3 mb-0 rounded rounded-3 mx-3 bg-light p-1 px-3">
-            <h4 className="m-2 mx-3">Task Backlog</h4>
+          <div className="d-flex justify-content-between text-start m-3 rounded rounded-3 mx-3 bg-light px-3">
+            <h5 className="m-2 align-self-center">Task Backlog</h5>
             <button className="btn btn-primary m-3" onClick={() => setCreatingTask(true)}>
               Create New Task
             </button>
           </div>
 
-          <div className="task-container bg-light rounded rounded-3 p-2 mx-3">
+          <div className="task-container bg-light rounded rounded-3 p-2 mx-3 mb-3">
             <SortableContext items={tasks.map(t => t.id)} strategy={horizontalListSortingStrategy}>
               <div className="d-flex flex-row">
                 {tasks.map(task => (

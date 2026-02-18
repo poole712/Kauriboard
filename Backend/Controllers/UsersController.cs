@@ -69,6 +69,21 @@ namespace Backend.Controllers
             return Ok(admins);
         }
 
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult GetCurrentUser()
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var user = _db.Users.FirstOrDefault(x => x.Id == userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new UserDto(user.Id, user.Name, user.Email, user.Role));
+        }
+
         public record UpdateUserRequest
         {
             public int Id { get; init; }

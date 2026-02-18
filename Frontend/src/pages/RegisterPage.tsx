@@ -70,7 +70,7 @@ function RegisterPage() {
         <button type="submit" onClick={handleSubmit} className="btn btn-primary">
           Register
         </button>
-        <button type="button" onClick={() => navigate('/pages/LoginPage')} className="btn btn-link">
+        <button type="button" onClick={() => navigate('/pages/Login')} className="btn btn-link">
           Login
         </button>
       </form>
