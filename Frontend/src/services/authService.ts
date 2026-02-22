@@ -1,247 +1,277 @@
-import instance from "../API/axios";
-import { AxiosError } from "axios";
+import instance from '../API/axios'
+import { AxiosError } from 'axios'
 
-async function login(email: string, password: string){
+async function login(email: string, password: string) {
   try {
-    const response = await instance.post("/Auth/login", {
+    const response = await instance.post('/Auth/login', {
       email,
       password,
-    });
-    return { ok: true, data: response.data };
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occurred during login",
-    };
+      error: error.response?.data?.message || 'An error occurred during login',
+    }
   }
 }
 
-async function register (email: string, name : string, password: string) {
+async function register(email: string, name: string, password: string) {
   try {
-    const response = await instance.post("/Auth/register", {
+    const response = await instance.post('/Auth/register', {
       email,
       name,
       password,
-    });
-    return { ok: true, data: response.data };
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occurred during registration",
-    };
+      error: error.response?.data?.message || 'An error occurred during registration',
+    }
   }
 }
 
 async function getprojects() {
   try {
-    const response = await instance.get("/Projects");
-    return { ok: true, data: response.data};
+    const response = await instance.get('/Projects')
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{ message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
       status: error.response?.status,
-      error: error.response?.data?.message || "An error occured getting projects"
+      error: error.response?.data?.message || 'An error occured getting projects',
     }
-  };
-}
-
-async function getproject(id : string) {
-  try {
-    const response = await instance.get(`/Projects/${id}`);
-    return { ok: true, data: response.data };
-  } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
-    return {
-      ok: false,
-      error: error.response?.data?.message || "An error occurred getting project",
-    };
   }
 }
 
-async function gettasks(projectId : string) {
+async function getproject(id: string) {
+  try {
+    const response = await instance.get(`/Projects/${id}`)
+    return { ok: true, data: response.data }
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>
+    return {
+      ok: false,
+      error: error.response?.data?.message || 'An error occurred getting project',
+    }
+  }
+}
+
+async function deleteproject(id: string) {
+  try {
+    const response = await instance.delete(`/Projects/${id}`)
+    return { ok : true, data: response.data}
+  } catch (err) {
+    const error = err as AxiosError<{message : string}>
+    return {
+      ok : false,
+      error : error.response?.data?.message || "Error Occured Deleting Project"
+    }
+  }
+}
+
+async function gettasks(projectId: string) {
   try {
     const response = await instance.get(`/Tasks/${projectId}/getall`)
-    return { ok: true, data: response.data};
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occurred getting tasks",
-    };
+      error: error.response?.data?.message || 'An error occurred getting tasks',
+    }
   }
 }
 
-async function gettask(taskId : string) {
+async function gettask(taskId: string) {
   try {
     const response = await instance.get(`/Tasks/${taskId}`)
-    return { ok: true, data: response.data}
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message : string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured getting task"
+      error: error.response?.data?.message || 'An error occured getting task',
     }
-    
   }
-  
 }
 
-async function createtask(name : string, description : string, status : string, assignedToUserId : number, projId : string) {
+async function createtask(name: string, description: string, status: string, assignedToUserId: number, projId: string) {
   try {
     const response = await instance.post(`/Tasks`, {
-      ProjectId : projId,
+      ProjectId: projId,
       name: name,
       description: description,
       status: status,
-      assignedToUserId: assignedToUserId
-    });
-    return { ok: true, data: response.data}
+      assignedToUserId: assignedToUserId,
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured posting task"
+      error: error.response?.data?.message || 'An error occured posting task',
     }
   }
 }
 
-async function createproject(name : string, description : string) {
+async function createproject(name: string, description: string) {
   try {
-    const response = await instance.post("/Projects", {
-      name, 
-      description
-    });
-    return { ok: true, data: response.data};
+    const response = await instance.post('/Projects', {
+      name,
+      description,
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{ message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured creating project"
+      error: error.response?.data?.message || 'An error occured creating project',
     }
-  };
+  }
 }
 
 async function getprojectmembers(projectId: number) {
   try {
-    const response = await instance.get(`/Projects/GetProjectMembers/${projectId}`);
-    return { ok: true, data: response.data };
+    const response = await instance.get(`/Projects/GetProjectMembers/${projectId}`)
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occurred getting project members",
-    };
+      error: error.response?.data?.message || 'An error occurred getting project members',
+    }
   }
 }
 
-async function gettaskswithstatus(status : string, projectId : string) {
+async function gettaskswithstatus(status: string, projectId: string) {
   try {
     const response = await instance.get(`/Tasks/${projectId}/status/${status}`)
-    return { ok: true, data: response.data};
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured getting tasks with status"
+      error: error.response?.data?.message || 'An error occured getting tasks with status',
     }
   }
-} 
+}
 
-async function updatetask(id : number, name : string, description : string, status : string) {
-  try {    
+async function updatetask(id: number, name: string, description: string, status: string) {
+  try {
     const response = await instance.put(`/Tasks/${id}`, {
       name: name,
       description: description,
       status: status,
-    });
-    return { ok: true, data: response.data}
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured updating task"
+      error: error.response?.data?.message || 'An error occured updating task',
     }
   }
 }
 
-async function deletetask(id : string) {
+async function deletetask(id: string) {
   try {
-    const response = await instance.delete(`/Tasks/${id}`);
-    return { ok: true, data: response.data};
+    const response = await instance.delete(`/Tasks/${id}`)
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured deleting task"
+      error: error.response?.data?.message || 'An error occured deleting task',
     }
   }
 }
 
-async function inviteuser(email : string, projectId : string) {
+async function inviteuser(email: string, projectId: string) {
   try {
     const response = await instance.post(`/Invites`, {
       Email: email,
-      ProjectId: projectId
-    });
-    return { ok: true, data: response.data};
+      ProjectId: projectId,
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured inviting user"
+      error: error.response?.data?.message || 'An error occured inviting user',
     }
   }
 }
 
-async function acceptinvite(token : string) {
+async function acceptinvite(token: string) {
   try {
     const response = await instance.post(`/Invites/accept`, {
-      token: token
-    });
-    return { ok: true, data: response.data};
+      token: token,
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message: string}>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occured accepting invite"
+      error: error.response?.data?.message || 'An error occured accepting invite',
     }
   }
 }
 
 async function getcurrentuser() {
   try {
-    const response = await instance.get("/Users/me");
-    return { ok: true, data: response.data };
+    const response = await instance.get('/Users/me')
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{ message: string }>;
+    const error = err as AxiosError<{ message: string }>
     return {
       ok: false,
-      error: error.response?.data?.message || "An error occurred getting current user",
-    };
+      error: error.response?.data?.message || 'An error occurred getting current user',
+    }
   }
 }
 
-async function removemember(projId : string, userId : string) {
+async function removemember(projId: string, userId: string) {
   try {
-    const response = await instance.post("/Projects/RemoveMember", {
-      projId : projId,
-      userId : userId
-    });
-    return { ok : true, data : response.data}
+    const response = await instance.post('/Projects/RemoveMember', {
+      projId: projId,
+      userId: userId,
+    })
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message : string}>;
-    return { 
-      ok : false, 
-      message : error.response?.data?.message || 'An error occured removing user'}
+    const error = err as AxiosError<{ message: string }>
+    return {
+      ok: false,
+      message: error.response?.data?.message || 'An error occured removing user',
+    }
   }
 }
 
 function logout() {
-  return instance.post("/auth/logout");
+  return instance.post('/auth/logout')
 }
 
-export { login, logout, register, getprojects, createproject, getprojectmembers, getproject, gettasks, 
-        gettask, createtask, gettaskswithstatus, updatetask, deletetask, inviteuser, acceptinvite, getcurrentuser, removemember };
+export {
+  login,
+  logout,
+  register,
+  getprojects,
+  createproject,
+  getprojectmembers,
+  getproject,
+  gettasks,
+  gettask,
+  createtask,
+  gettaskswithstatus,
+  updatetask,
+  deletetask,
+  inviteuser,
+  acceptinvite,
+  getcurrentuser,
+  removemember,
+  deleteproject
+}

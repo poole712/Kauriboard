@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getprojectmembers } from '../services/authService'
 import "../index.css";
 import { useNavigate } from 'react-router';
+import ProjectManageDropdown from './ProjectManage';
 
 function Project({ id, name, description }: { id: number; name: string; description: string }) {
 

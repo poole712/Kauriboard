@@ -94,7 +94,7 @@ function Task({
             ) : (
               <h6 className="mb-0">{name}</h6>
             )}
-            <div className="d-flex col-1 flex-row justify-content-end align-items-center ms-auto">
+            <div className="d-flex flex-row justify-content-end align-items-center ms-auto">
               <div
                 className="dropdown float-end ms-auto mx-1"
                 onPointerDown={e => {
@@ -131,7 +131,7 @@ function Task({
           </form>
         </div>
 
-        <form>
+        <form className='mt-1'>
           {isEditing ? (
             <input
               type="text"
@@ -143,15 +143,6 @@ function Task({
             <p>{description}</p>
           )}
         </form>
-        <div className="toast" role="alert" aria-live="assertive" aria-atomic="true">
-          <div className="toast-header">
-            <img src="..." className="rounded me-2" alt="..." />
-            <strong className="me-auto">Bootstrap</strong>
-            <small>11 mins ago</small>
-            <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div className="toast-body">Hello, world! This is a toast message.</div>
-        </div>
       </div>
     </>
   )

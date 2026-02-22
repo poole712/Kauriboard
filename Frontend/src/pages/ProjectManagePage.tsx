@@ -8,6 +8,7 @@ import type { DragEndEvent, DragStartEvent } from '@dnd-kit/core'
 import { DndContext, DragOverlay, pointerWithin } from '@dnd-kit/core'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import ProjectMembers from '../components/ProjectMembers'
+import ProjectManageDropdown from '../components/ProjectManage'
 
 function ProjectManagePage() {
   const { id } = useParams() as { id: string }
@@ -102,10 +103,14 @@ function ProjectManagePage() {
 
         <div className="card container mt-4">
           <div className="d-flex flex-column col-12">
-            <h5 className="p-2 m-3 rounded rounded-3 d-flex bg-light">{project?.name}</h5>
+            <div className='d-flex flex-row justify-content-between rounded rounded-3 bg-light align-items-center p-2 m-2 mt-3'>
+              <h5 className='mx-2'>{project?.name}</h5>
+              <ProjectManageDropdown projId={id}/>
+            </div>
+
             <div className="d-flex flex-row ">
-              <p className="m-2 mx-5 text-start col-7 d-flex fs-5">Description: {project?.description}</p>
-              <ProjectMembers members={members} project={project!} refresh={triggerRefresh}/>
+              <p className="m-2 mx-5 text-start col-7 d-flex fs-5">{project?.description}</p>
+              <ProjectMembers members={members} project={project!} refresh={triggerRefresh} />
             </div>
             <div className="bg-light m-3 rounded rounded-3 d-flex justify-content-between align-items-center">
               <h5 className="m-2 p-2">Task Board</h5>
@@ -118,9 +123,9 @@ function ProjectManagePage() {
             </div>
           </div>
 
-          <div className="d-flex justify-content-between text-start m-3 rounded rounded-3 mx-3 bg-light px-3">
+          <div className="d-flex justify-content-between text-start m-3 rounded rounded-3 mx-3 bg-light px-2">
             <h5 className="m-2 align-self-center">Task Backlog</h5>
-            <button className="btn btn-primary m-3" onClick={() => setCreatingTask(true)}>
+            <button className="btn btn-primary m-2" onClick={() => setCreatingTask(true)}>
               Create New Task
             </button>
           </div>
