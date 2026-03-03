@@ -251,9 +251,24 @@ async function removemember(projId: string, userId: string) {
   }
 }
 
+async function getcomments(taskId : string) {
+  try {
+  const response = await instance.get(`/Comments/?taskId=${taskId}`);
+  return {ok: true, data: response.data}
+  } catch (err) {
+    const error = err as AxiosError<{message : string}>
+    return {
+      ok: false,
+      error: error.response?.data?.message || 'An error occured getting comments'
+    }
+  }
+  
+}
+
 function logout() {
   return instance.post('/auth/logout')
 }
+
 
 export {
   login,
@@ -273,5 +288,6 @@ export {
   acceptinvite,
   getcurrentuser,
   removemember,
-  deleteproject
+  deleteproject,
+  getcomments
 }

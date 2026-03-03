@@ -34,7 +34,7 @@
   justify-self: center;
   align-self: center;
   width: 85%;
-  height:100vh;
+  height: 100vh;
 }
 
 .main-content {
@@ -48,7 +48,7 @@
 }
 
 .navbar {
-  background-color:bisque;
+  background-color: bisque;
 }
 
 .navbar-brand {
@@ -64,7 +64,6 @@
   margin-left: 2rem;
 }
 
-
 .member {
   display: flex;
   margin: 0.25rem;
@@ -76,33 +75,46 @@
 }
 
 .projectHovered {
-  background-color: rgb(139, 184, 174) !important;
+  background-color: #8bb8ae !important;
 }
 
 .task-scroll-container {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
   gap: 1rem;
-  overflow-x: auto;
-  overflow: visible;
+  overflow-x: hidden;
   white-space: nowrap;
   padding-bottom: 1rem;
 }
 
-.task {
+.board-task {
   display: flex;
+  margin-top: 15px;
+  padding: 10px;
+  margin-bottom: 0px;
   flex-direction: row;
+  width: 315px;
+  font-size: small;
+  text-align: start;
+}
+
+.task-description {
+  margin-right: 5px;
+  margin-left: 10px;
+}
+
+.backlog-task {
+  display: flex;
+  height: auto;
+  align-self: flex-start;
+  text-align: start;
+  margin: 15px;
+  padding: 10px;
   width: 315px;
   font-size: small;
 }
 
-.task-container {
-  flex-direction: row;
-  overflow: visible;
-  overflow-x: auto;
-  padding-bottom: 2rem;
-
-}
 
 .backlog-box-title {
   background-color: #17a2b8;
@@ -116,19 +128,70 @@
 .backlog-box {
   display: flex;
   flex-direction: column;
-  height: 350px;
-  width: 350px;
-  background-color:aliceblue;
+  height: 500px;
+  width: 375px;
+  background-color: aliceblue;
   border-radius: 5px;
-  overflow-x: auto;     
-  overflow-y: auto; 
-  scrollbar-width: none;  
+  scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+.backlog-scroller {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  scrollbar-width: 0px;
+  scrollbar-width: 0;
+  align-items: center;
+}
+
+.backlog-scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.comment-box {
+  display: flex;
+  margin: auto;
+  padding: 5px;
+  background-color: white;
+  border-radius: 0px 0px 10px 10px;
+  flex-direction: column;
+  width: 300px;
+}
+
+.comment {
+  display: flex;
+  border-radius: 10px;
+  margin: 5px;
+  margin-right: 25px;
+  padding: 5px;
+  background-color: rgb(224, 224, 224);
+  justify-content: baseline;
+  text-align: start;
+}
+
+.new-comment {
+  margin: 5px;
+  width: 100%;
+  margin-right: 0;
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+.comment-date {
+  margin-bottom: 0px;
+  margin-left: 5px;
+  font-size: 10px;
+}
+
+.comment-message {
+  font-size: small;
+  margin: 0;
+  margin-top: 2px;
+
 }
 
 .backlog-box::-webkit-scrollbar {
   height: 0px; /* hide horizontal scrollbar */
-  width: 8px;  /* keep vertical scrollbar */
+  width: 8px; /* keep vertical scrollbar */
 }
-
-

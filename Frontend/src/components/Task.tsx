@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { deletetask, updatetask } from '../services/authService'
+import CommentBox from './CommentBox'
 
 function Task({
   id,
@@ -23,13 +24,15 @@ function Task({
   const [hovered, setHovered] = useState(false)
   const [editHovered, setEditHovered] = useState(false)
   const [deleteHovered, setDeleteHovered] = useState(false)
+  const [commentHovered, setCommentHovered] = useState(false)
+  const [isCommenting, setIsCommenting] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
   const [editedName, setEditedName] = useState(name)
   const [editedDescription, setEditedDescription] = useState(description)
 
   const classStyle = inBacklog
-    ? 'card justify-content-around d-flex mx-3 p-2 px-3 col-3 text-start align-self-start task'
-    : 'card justify-content-around d-flex m-3 p-2 px-3 text-start task'
+    ? 'card backlog-task'
+    : 'card board-task'
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
@@ -64,6 +67,8 @@ function Task({
     refresh()
   }
 
+  async function handleCommenting() {}
+
   const style: React.CSSProperties = {
     transform: transform ? CSS.Translate.toString(transform) : undefined,
     visibility: hidden ? 'hidden' : 'visible',
@@ -82,13 +87,13 @@ function Task({
         {...(!isEditing ? listeners : {})}
       >
         <div>
-          <form className='d-flex flex-row justify-content-around align-items-center'>
+          <form className="d-flex flex-row justify-content-around align-items-center">
             {isEditing ? (
               <input
                 type="text"
                 className="form-control"
                 value={editedName}
-                style={{width: "150px"}}
+                style={{ width: '150px' }}
                 onChange={e => setEditedName(e.target.value)}
               />
             ) : (
@@ -108,7 +113,7 @@ function Task({
                 <i
                   data-no-drag
                   className={editHovered ? 'bi bi-pencil-fill' : 'bi bi-pencil'}
-                  style={{ fontSize: '25px', cursor: 'pointer' }}
+                  style={{ fontSize: '20px', cursor: 'pointer' }}
                 ></i>
               </div>
               <div
@@ -124,14 +129,14 @@ function Task({
                 <i
                   data-no-drag
                   className={deleteHovered ? 'bi bi-trash-fill' : 'bi bi-trash'}
-                  style={{ fontSize: '25px', cursor: 'pointer' }}
+                  style={{ fontSize: '20px', cursor: 'pointer' }}
                 ></i>
               </div>
             </div>
           </form>
         </div>
 
-        <form className='mt-1'>
+        <form className="mt-1 task-description">
           {isEditing ? (
             <input
               type="text"
@@ -143,7 +148,27 @@ function Task({
             <p>{description}</p>
           )}
         </form>
+        <div
+          className="dropdown float-end ms-auto mx-1"
+          onPointerDown={e => {
+            e.stopPropagation() // stops drag from starting
+            e.preventDefault() // prevents dnd-kit from hijacking the click
+          }}
+          onMouseOver={() => setCommentHovered(true)}
+          onMouseLeave={() => setCommentHovered(false)}
+          onClick={() => setIsCommenting(!isCommenting)}
+        >
+          <i
+            data-no-drag
+            className={commentHovered ? 'bi bi-chat-left-dots-fill' : 'bi bi-chat-left-dots'}
+            style={{ fontSize: '15px', cursor: 'pointer' }}
+          ></i>
+        </div>
+        <div hidden={!isCommenting}>
+        <CommentBox taskId={id} hidden={isCommenting}/>
       </div>
+      </div>
+      
     </>
   )
 }

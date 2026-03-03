@@ -28,7 +28,7 @@ function App() {
             <p className="fs-5 align-self-center ">
               My name is Fletcher Poole and I am based in Auckland, New Zealand. I have a strong passion
               for Game and Web Development. In 2025 I completed a degree in Computer Science, Majoring in Software Development
-              as Auckland University of Technology (AUT).
+              at Auckland University of Technology (AUT).
               <br></br>
               <br></br>
               Below are links to my Portfolios, GitHub as well as my contact details. Thanks for checking out KauriTree!
