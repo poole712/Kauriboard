@@ -1,17 +1,28 @@
 import { useEffect, useState } from 'react'
-import { getcomments } from '../services/authService'
+import { getcomments, postcomment } from '../services/authService'
+import CommentContainer from './CommentContainer';
 
 type Comment = {
   commentId: string
   message: string
   name: string
   createdAt: Date
+  userId : number
 }
 
-function CommentBox({ taskId, hidden}: { taskId: string, hidden : boolean }) {
+function CommentBox({ taskId, hidden }: { taskId: string; hidden: boolean; }) {
   const [newComment, setNewComment] = useState('')
   const [comments, setComments] = useState<Comment[]>([])
   const [sendHovered, setSendHoevered] = useState(false)
+
+  async function getComments() {
+    const response = await getcomments(taskId)
+    if (response.ok) {
+      setComments(response.data)
+    } else {
+      console.log(response.error)
+    }
+  }
 
   useEffect(() => {
     async function getComments() {
@@ -26,48 +37,45 @@ function CommentBox({ taskId, hidden}: { taskId: string, hidden : boolean }) {
     getComments()
   }, [taskId])
 
-  function handleSendComment() {
-    
+  async function handleSendComment() {
+    const response = await postcomment(newComment, taskId)
+    getComments();
+    console.log(response.data)
   }
 
   return (
     <>
       <div className="comment-box" hidden={!hidden}>
         {comments.map(c => (
-          <div className="comment" key={c.commentId}>
-            <div className="d-flex flex-column justify-content-start">
-              <p className="mx-1 m-0 text-success">{c.name}:</p>
-              <p className="comment-date">{new Date(c.createdAt).toLocaleDateString()}</p>
-            </div>
-            <p className="comment-message">{c.message}</p>
-          </div>
+          <CommentContainer key={c.commentId} comment={c} refresh={getComments}/>
         ))}
-        <div className='d-flex '>
+        <div className="d-flex ">
           <input
             className="new-comment"
-            onPointerDown={e => {
-                  e.stopPropagation() // stops drag from starting
-                }}
+            onPointerDown={e => e.stopPropagation()}
+            onClick={e => e.stopPropagation()}
+            onKeyDown={e => e.stopPropagation()}
+            onKeyUp={e => e.stopPropagation()}
             type="text"
             placeholder="...new comment"
             onChange={e => setNewComment(e.target.value)}
           ></input>
           <div
-                className="m-1"
-                onPointerDown={e => {
-                  e.stopPropagation() // stops drag from starting
-                  e.preventDefault() // prevents dnd-kit from hijacking the click
-                }}
-                onMouseOver={() => setSendHoevered(true)}
-                onMouseLeave={() => setSendHoevered(false)}
-                onClick={handleSendComment}
-              >
-                <i
-                  data-no-drag
-                  className={sendHovered ? 'bi bi-send-fill' : 'bi bi-send'}
-                  style={{ fontSize: '20px', cursor: 'pointer' }}
-                ></i>
-              </div>
+            className="m-1"
+            onPointerDown={e => {
+              e.stopPropagation() // stops drag from starting
+              e.preventDefault() // prevents dnd-kit from hijacking the click
+            }}
+            onMouseOver={() => setSendHoevered(true)}
+            onMouseLeave={() => setSendHoevered(false)}
+            onClick={handleSendComment}
+          >
+            <i
+              data-no-drag
+              className={sendHovered ? 'bi bi-send-fill' : 'bi bi-send'}
+              style={{ fontSize: '20px', cursor: 'pointer' }}
+            ></i>
+          </div>
         </div>
       </div>
     </>

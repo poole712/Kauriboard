@@ -30,9 +30,7 @@ function Task({
   const [editedName, setEditedName] = useState(name)
   const [editedDescription, setEditedDescription] = useState(description)
 
-  const classStyle = inBacklog
-    ? 'card backlog-task'
-    : 'card board-task'
+  const classStyle = inBacklog ? 'card backlog-task' : 'card board-task'
 
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: id,
@@ -51,8 +49,8 @@ function Task({
       setIsEditing(true)
     } else {
       setIsEditing(false)
-      console.log(Number(id), editedName, editedDescription, status)
-      const response = await updatetask(Number(id), editedName, editedDescription, status)
+      console.log(Number(id), editedName, editedDescription, status || 'Unassigned')
+      const response = await updatetask(Number(id), editedName, editedDescription, status || 'Unassigned')
       if (response.ok) {
         refresh()
       }
@@ -66,8 +64,6 @@ function Task({
     }
     refresh()
   }
-
-  async function handleCommenting() {}
 
   const style: React.CSSProperties = {
     transform: transform ? CSS.Translate.toString(transform) : undefined,
@@ -165,10 +161,9 @@ function Task({
           ></i>
         </div>
         <div hidden={!isCommenting}>
-        <CommentBox taskId={id} hidden={isCommenting}/>
+          <CommentBox taskId={id} hidden={isCommenting} />
+        </div>
       </div>
-      </div>
-      
     </>
   )
 }

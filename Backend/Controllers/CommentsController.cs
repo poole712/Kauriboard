@@ -29,7 +29,7 @@ namespace Backend.Controllers
 
             var user = _db.Users.SingleOrDefault(u => u.Id == userId);
 
-            var task = _db.TaskItems.SingleOrDefault(ta => ta.Id == request.taskId);
+            var task = _db.TaskItems.SingleOrDefault(ta => ta.Id == request.TaskId);
             if (task == null)
             {
                 return BadRequest("Task does not exist.");
@@ -43,9 +43,9 @@ namespace Backend.Controllers
 
             var comment = new Comment
             {
-                Message = request.message,
+                Message = request.Message,
                 UserId = userId,
-                TaskItemId = request.taskId
+                TaskItemId = request.TaskId
             };
 
             var userName = user != null ? user.Name : "Unknown";
@@ -107,7 +107,7 @@ namespace Backend.Controllers
             return Ok(comments);
         }
 
-        public record AddCommentRequest(string message, int taskId);
-        public record CommentDTO(string message, string name, int commentId, int userId, int taskId, DateTime createdAt);
+        public record AddCommentRequest(string Message, int TaskId);
+        public record CommentDTO(string Message, string Name, int CommentId, int UserId, int TaskId, DateTime CreatedAt);
     }
 }

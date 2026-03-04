@@ -2,8 +2,6 @@ import { getcurrentuser, inviteuser } from "../services/authService"
 import { useEffect, useState } from "react"
 import Member from "./Member"
 
-
-
 type Project = {
   id: number
   name: string

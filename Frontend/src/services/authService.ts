@@ -64,12 +64,12 @@ async function getproject(id: string) {
 async function deleteproject(id: string) {
   try {
     const response = await instance.delete(`/Projects/${id}`)
-    return { ok : true, data: response.data}
+    return { ok: true, data: response.data }
   } catch (err) {
-    const error = err as AxiosError<{message : string}>
+    const error = err as AxiosError<{ message: string }>
     return {
-      ok : false,
-      error : error.response?.data?.message || "Error Occured Deleting Project"
+      ok: false,
+      error: error.response?.data?.message || 'Error Occured Deleting Project',
     }
   }
 }
@@ -251,24 +251,51 @@ async function removemember(projId: string, userId: string) {
   }
 }
 
-async function getcomments(taskId : string) {
+async function getcomments(taskId: string) {
   try {
-  const response = await instance.get(`/Comments/?taskId=${taskId}`);
-  return {ok: true, data: response.data}
+    const response = await instance.get(`/Comments/?taskId=${taskId}`)
+    return { ok: true, data: response.data }
+  } catch (err) {
+    const error = err as AxiosError<{ message: string }>
+    return {
+      ok: false,
+      error: error.response?.data?.message || 'An error occured getting comments',
+    }
+  }
+}
+
+async function postcomment(messaqe: string, taskId: string) {
+  try {
+    const response = await instance.post('/Comments/', {
+      Message: messaqe,
+      TaskId: taskId,
+    })
+    return { ok : true, data : response.data}
   } catch (err) {
     const error = err as AxiosError<{message : string}>
     return {
-      ok: false,
-      error: error.response?.data?.message || 'An error occured getting comments'
+      ok : false,
+      error: error.response?.data?.message || 'Error occured Posting Comment'
     }
   }
-  
+}
+
+async function deletecomment(commentId : string) {
+  try {
+    const response = await instance.delete(`/Comments/${commentId}`)
+    return { ok : true, data : response.data}
+  } catch (err) {
+    const error = err as AxiosError<{message : string}>
+    return {
+      ok : false,
+      error : error.response?.data?.message || 'Error deleting Commment'
+    }
+  }
 }
 
 function logout() {
   return instance.post('/auth/logout')
 }
-
 
 export {
   login,
@@ -289,5 +316,7 @@ export {
   getcurrentuser,
   removemember,
   deleteproject,
-  getcomments
+  getcomments,
+  postcomment,
+  deletecomment
 }

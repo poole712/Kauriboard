@@ -108,10 +108,11 @@ namespace Backend.Controllers
                 CreatedAt = DateTime.UtcNow
             };
 
-            if (!Enum.TryParse<TaskCurrentStatus>(request.Status, out var status))
-                return BadRequest("Invalid status value.");
+            // if (!Enum.TryParse<TaskCurrentStatus>(request.Status, out var status))
+            //     return BadRequest("Invalid status value.");
 
-            Task.Status = status;
+            // Task.Status = status;
+            Console.WriteLine(Task);
 
             _db.TaskItems.Add(Task);
             _db.SaveChanges();
@@ -236,7 +237,7 @@ namespace Backend.Controllers
         }
 
         public record AssignUserRequest(int AssignedToUserId);
-        public record CreateTaskRequest(string Name, string Description, string Status, int AssignedToUserId, int ProjectId);
+        public record CreateTaskRequest(string Name, string Description, int AssignedToUserId, int ProjectId);
         public record UpdateTaskRequest(string? Name, string? Description, string? Status, int? AssignedToUserId);
         public record TaskDTO(int Id, string Name, string Description, string Status, int ProjectId, DateTime CreatedAt, int? AssignedToUserId = null);
     }
