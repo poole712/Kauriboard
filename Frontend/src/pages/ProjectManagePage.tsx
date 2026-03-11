@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
-import { getproject, getprojectmembers, gettaskswithstatus, updatetask } from '../services/authService'
+import { getcurrentuser, getproject, getprojectmembers, gettaskswithstatus, updatetask } from '../services/authService'
 import Task from '../components/Task'
 import CreateTask from '../components/CreateTask'
 import BacklogBox from '../components/BacklogBox'
@@ -17,6 +17,7 @@ function ProjectManagePage() {
   const [tasks, setTasks] = useState<Task[]>([])
   const [creatingTask, setCreatingTask] = useState(false)
   const [members, setMembers] = useState<Member[]>([])
+  const [currentUser, setCurrentUser] = useState<Member | null>(null)
   const [activeId, setActiveId] = useState<string | null>(null)
   const [activeTask, setActiveTask] = useState<Task | null>(null)
   const [refresh, setRefresh] = useState(0)
@@ -41,6 +42,19 @@ function ProjectManagePage() {
     description: string
     createdByUserId: number
   }
+
+  useEffect(() => {
+    async function checkOwnership() {
+      const response = await getcurrentuser()
+      if (response.ok) {
+        console.log('Current user:', response.data)
+        setCurrentUser(response.data)
+      } else {
+        console.log('Failed to get current user:', response.error)
+      }
+    }
+    checkOwnership()
+  }, [refresh])
 
   function onShow() {
     setCreatingTask(!creatingTask)
@@ -103,9 +117,11 @@ function ProjectManagePage() {
 
         <div className="card container mt-4">
           <div className="d-flex flex-column col-12">
-            <div className='d-flex flex-row justify-content-between rounded rounded-3 bg-light align-items-center p-2 m-2 mt-3'>
-              <h5 className='mx-2'>{project?.name}</h5>
-              <ProjectManageDropdown projId={id}/>
+            <div className="d-flex flex-row justify-content-between rounded rounded-3 bg-light align-items-center p-2 m-2 mt-3">
+              <h5 className="mx-2">{project?.name}</h5>
+              <div hidden={currentUser?.id !== project?.createdByUserId}>
+                <ProjectManageDropdown projId={id} />
+              </div>
             </div>
 
             <div className="d-flex flex-row ">

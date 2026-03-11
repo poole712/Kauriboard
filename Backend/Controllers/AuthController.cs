@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Google.Apis.Auth;
 
 namespace Backend.Controllers
 {
@@ -70,9 +71,37 @@ namespace Backend.Controllers
 
             return Ok("User registered successfully.");
         }
+
+        [HttpPost("google-login")]
+        public async Task<IActionResult> GoogleLogin([FromBody] GoogleLoginRequest request)
+        {
+            var payload = await GoogleJsonWebSignature.ValidateAsync(request.credential);
+
+            // Check if user exists
+            var user = await _db.Users.SingleOrDefaultAsync(u => u.Email == payload.Email);
+
+            // If not, create them
+            if (user == null)
+            {
+                user = new User
+                {
+                    Email = payload.Email,
+                    Name = payload.Name,
+                    Role = "User"
+                };
+
+                _db.Users.Add(user);
+                await _db.SaveChangesAsync();
+            }
+
+            // Now user.Id is guaranteed to exist in the DB
+            var jwt = _jwtTokenService.GenerateToken(user);
+
+            return Ok(new { token = jwt });
+        }
     }
 
+    public record GoogleLoginRequest(string credential);
     public record LoginRequest(string Email, string Password);
-
     public record RegisterRequest(string Email, string Name, string Password);
 }

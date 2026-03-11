@@ -4,6 +4,7 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KauriBoardApi.Migrations
 {
     [DbContext(typeof(KauriContext))]
-    partial class KauriContextModelSnapshot : ModelSnapshot
+    [Migration("20260310215540_MakePasswordNullable")]
+    partial class MakePasswordNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +59,7 @@ namespace KauriBoardApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 3, 10, 21, 58, 8, 568, DateTimeKind.Utc).AddTicks(8359),
+                            CreatedAt = new DateTime(2026, 3, 10, 21, 55, 40, 405, DateTimeKind.Utc).AddTicks(5187),
                             Message = "This is the first comment.",
                             TaskItemId = 1,
                             UserId = 1
@@ -130,7 +133,7 @@ namespace KauriBoardApi.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2026, 3, 10, 21, 58, 8, 568, DateTimeKind.Utc).AddTicks(4554),
+                            CreatedAt = new DateTime(2026, 3, 10, 21, 55, 40, 405, DateTimeKind.Utc).AddTicks(1814),
                             CreatedByUserId = 1,
                             Description = "This is the first project.",
                             Name = "Initial Project"
@@ -204,7 +207,7 @@ namespace KauriBoardApi.Migrations
                         {
                             Id = 1,
                             AssignedToUserId = 1,
-                            CreatedAt = new DateTime(2026, 3, 10, 21, 58, 8, 568, DateTimeKind.Utc).AddTicks(4579),
+                            CreatedAt = new DateTime(2026, 3, 10, 21, 55, 40, 405, DateTimeKind.Utc).AddTicks(1837),
                             Description = "This is the first task.",
                             Name = "Initial Task",
                             ProjectId = 1,
@@ -229,6 +232,7 @@ namespace KauriBoardApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Role")
@@ -245,7 +249,7 @@ namespace KauriBoardApi.Migrations
                             Id = 1,
                             Email = "admin@gmail.com",
                             Name = "admin",
-                            PasswordHash = "AQAAAAIAAYagAAAAEELapsRDddnJhC25fStgH2mXUPUS4gkvTkr6cHB1OAoe+B8MTF4jXAdrXVfWlVoxGQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELY/m5cfWNWNsutht+8jsUz/8bs6FaU+dkz4F+2Z77dhHouqvQ3HW/9zQbOGOtUXyA==",
                             Role = "Admin"
                         });
                 });

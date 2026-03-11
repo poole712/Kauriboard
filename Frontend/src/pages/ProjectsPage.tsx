@@ -43,7 +43,7 @@ function ProjectsPage() {
         </button>
       </div>
       <p hidden={!loading}>Loading...</p>
-      <div className="m-3 bg-secondary p-3 rounded rounded-1">
+      <div className="m-3 bg-secondary p-1 pb-3 px-3 rounded rounded-1">
         {projects.map(project => (
           <Project key={project.id} id={project.id} name={project.name} description={project.description} />
         ))}

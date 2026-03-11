@@ -5,7 +5,7 @@ function Navbar() {
     <>
       <nav className="navbar align-self-start p-3 justify-content-start">
         <Link className="navbar-brand" to="/">
-          KauriTree
+          KauriBoard
         </Link>
         <div className='navlinks d-flex flex-fill justify-content-end'>
           <Link className="nav-link" to="/pages/Projects">

@@ -10,44 +10,23 @@ type Comment = {
   userId : number
 }
 
-function CommentBox({ taskId, hidden }: { taskId: string; hidden: boolean; }) {
+function CommentBox({ taskId, hidden, comments, refresh }: { taskId: string; hidden: boolean; comments: Comment[]; refresh : () => void}) {
   const [newComment, setNewComment] = useState('')
-  const [comments, setComments] = useState<Comment[]>([])
   const [sendHovered, setSendHoevered] = useState(false)
 
-  async function getComments() {
-    const response = await getcomments(taskId)
-    if (response.ok) {
-      setComments(response.data)
-    } else {
-      console.log(response.error)
-    }
-  }
-
-  useEffect(() => {
-    async function getComments() {
-      const response = await getcomments(taskId)
-      if (response.ok) {
-        setComments(response.data)
-      } else {
-        console.log(response.error)
-      }
-    }
-
-    getComments()
-  }, [taskId])
 
   async function handleSendComment() {
     const response = await postcomment(newComment, taskId)
-    getComments();
     console.log(response.data)
+    refresh()
+    setNewComment('')
   }
 
   return (
     <>
       <div className="comment-box" hidden={!hidden}>
         {comments.map(c => (
-          <CommentContainer key={c.commentId} comment={c} refresh={getComments}/>
+          <CommentContainer key={c.commentId} comment={c} refresh={refresh}/>
         ))}
         <div className="d-flex ">
           <input
@@ -58,6 +37,7 @@ function CommentBox({ taskId, hidden }: { taskId: string; hidden: boolean; }) {
             onKeyUp={e => e.stopPropagation()}
             type="text"
             placeholder="...new comment"
+            value={newComment}
             onChange={e => setNewComment(e.target.value)}
           ></input>
           <div

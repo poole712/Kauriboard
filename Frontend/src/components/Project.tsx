@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { getprojectmembers } from '../services/authService'
 import "../index.css";
 import { useNavigate } from 'react-router';
-import ProjectManageDropdown from './ProjectManage';
 
 function Project({ id, name, description }: { id: number; name: string; description: string }) {
 
@@ -41,7 +40,7 @@ function Project({ id, name, description }: { id: number; name: string; descript
   }
 
   return (
-    <div className="card" onMouseEnter={e => hovering(true, e)} onMouseLeave={e => hovering(false, e)}>
+    <div className="card mt-3" onMouseEnter={e => hovering(true, e)} onMouseLeave={e => hovering(false, e)}>
       <div className="d-flex flex-row col-12 ">
         <div className="p-2 col-6" key={id}>
           <h3 className="mx-2 d-flex">{name}</h3>

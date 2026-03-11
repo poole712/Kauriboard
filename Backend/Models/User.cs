@@ -19,8 +19,7 @@ namespace Backend.Models
         [Required]
         public string Role { get; set; }
 
-        [Required]
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
 
         public ICollection<Project> Projects { get; set; }
         public ICollection<TaskItem> Tasks { get; set; }

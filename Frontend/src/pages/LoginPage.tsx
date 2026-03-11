@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { login } from '../services/authService'
 import { useNavigate } from 'react-router'
+import GoogleButton from '../components/GoogleButton'
 
 function LoginPage() {
   const [email, setEmail] = useState('')
@@ -25,7 +26,7 @@ function LoginPage() {
 
   return (
     <>
-      <h1>Login Page</h1>
+      <h1 className='m-3'>Login Page</h1>
       <form className="w-50 mx-auto m-5 vh-100">
         <div className="mb-3 ">
           <label htmlFor="email" className="form-label float-start">
@@ -54,9 +55,12 @@ function LoginPage() {
         <p className="text-danger" id="error-message">
           {error}
         </p>
-        <button type="submit" onClick={handleSubmit} className="btn btn-primary">
-          Login
-        </button>
+        <div className='d-flex align-items-center justify-content-center'>
+          <button type="submit" onClick={handleSubmit} className="btn btn-primary">
+            Login
+          </button>
+          <GoogleButton />
+        </div>
         <button type="button" onClick={() => navigate('/pages/Register')} className="btn btn-link">
           Register
         </button>
