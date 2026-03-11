@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { getcomments, postcomment } from '../services/authService'
+import {  useState } from 'react'
+import { postcomment } from '../services/authService'
 import CommentContainer from './CommentContainer';
 
 type Comment = {
