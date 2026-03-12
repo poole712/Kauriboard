@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-    baseURL: 'http://localhost:5017/api',
+    baseURL: 'https://kauriboard-c4fvc3dkhfg7d6ey.canadacentral-01.azurewebsites.net/',
     timeout: 5000,
     headers: {'Content-Type': 'application/json'}
 });
