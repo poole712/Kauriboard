@@ -55,7 +55,7 @@ namespace Backend.Controllers
             email.From.Add(new MailboxAddress("KauriBoard", "fletchdev712@gmail.com"));
             email.To.Add(new MailboxAddress("New Invited User", request.Email));
 
-            var inviteUrl = $"http://localhost:5173/invite?token={token}";
+            var inviteUrl = $"https://kauriboard.vercel.app/invite?token={token}";
 
             email.Subject = "KauriBoard Invite";
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
