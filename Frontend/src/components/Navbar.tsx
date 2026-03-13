@@ -1,6 +1,9 @@
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 
 function Navbar() {
+
+  const navigator = useNavigate();
+
   return (
     <>
       <nav className="navbar align-self-start p-3 justify-content-start">
@@ -16,7 +19,7 @@ function Navbar() {
           </Link>
           <button className='nav-link' onClick={() => {
             localStorage.removeItem("token");
-            window.location.href = "/pages/Login";
+            navigator('/pages/Login')
           }}>
             Logout
           </button>
