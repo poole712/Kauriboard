@@ -25,7 +25,7 @@ builder.Services.AddCors(options =>
 });
 
 builder.Services.AddDbContext<KauriContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("KauriDB") ?? 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("KauriDB") ?? 
     "Data Source=kauri.db"));
 
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
