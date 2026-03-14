@@ -2,7 +2,7 @@ import { GoogleLogin, GoogleOAuthProvider, type CredentialResponse } from '@reac
 import { googlelogin } from '../services/authService';
 import { useNavigate } from 'react-router';
 
-function GoogleButton() {
+function GoogleButton({showToast} : {showToast : () => void}) {
 
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ function GoogleButton() {
         navigate('/')
     }
   return (
-    <div className='m-2'>
+    <div className='m-2' onClick={showToast}>
       <GoogleOAuthProvider clientId="438696075915-137f725khl7ii6k5qk6b18pji653nd1a.apps.googleusercontent.com">
         <GoogleLogin
           onSuccess={handleGoogleSuccess}
