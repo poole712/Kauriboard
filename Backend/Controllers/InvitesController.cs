@@ -66,7 +66,7 @@ namespace Backend.Controllers
             using (var stmp = new SmtpClient())
             {
                 stmp.Connect("smtp.gmail.com", 587, false);
-                stmp.Authenticate("fletchdev712@gmail.com", "ehbf fzbd xtlk gyvz");
+                stmp.Authenticate("fletchdev712@gmail.com", "xtmx sbdk evcw bdhv");
 
                 stmp.Send(email);
                 stmp.Disconnect(true);
