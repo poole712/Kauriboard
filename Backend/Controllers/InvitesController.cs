@@ -7,11 +7,10 @@ using Backend.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
-using MailKit.Net.Smtp;
-using MailKit;
-using MimeKit;
 using Org.BouncyCastle.Asn1.Cms;
 using Backend.Models;
+using Resend;
+
 
 namespace Backend.Controllers
 {
@@ -20,15 +19,17 @@ namespace Backend.Controllers
     public class InvitesController : ControllerBase
     {
         private readonly KauriContext _db;
+        private readonly IResend _resend;
 
-        public InvitesController(KauriContext db)
+        public InvitesController(KauriContext db, IResend resend)
         {
             _db = db;
+            _resend = resend;
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult CreateInvite([FromBody] CreateInviteRequest request)
+        public async Task<IActionResult> CreateInviteAsync([FromBody] CreateInviteRequest request)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
@@ -50,27 +51,15 @@ namespace Backend.Controllers
             _db.Invites.Add(invite);
             _db.SaveChanges();
 
-            var email = new MimeMessage();
-
-            email.From.Add(new MailboxAddress("KauriBoard", "fletchdev712@gmail.com"));
-            email.To.Add(new MailboxAddress("New Invited User", request.Email));
-
             var inviteUrl = $"https://kauriboard.vercel.app/invite?token={token}";
 
-            email.Subject = "KauriBoard Invite";
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            {
-                Text = $"<p>You have been invited to join a project on <b>KauriBoard</b>. Use the following token to accept the invite: <a href='{inviteUrl}'>Accept Invite</a></p>"
-            };
+            var message = new EmailMessage();
+            message.From = "fletchdev712@gmail.com";
+            message.To = request.Email;
+            message.Subject = "KauriBoard Invitation";
+            message.HtmlBody = $"<p>You have been invited to join a project on <b>KauriBoard</b>. Use the following token to accept the invite: <a href='{inviteUrl}'>Accept Invite</a></p>";
 
-            using (var stmp = new SmtpClient())
-            {
-                stmp.Connect("smtp.gmail.com", 587, false);
-                stmp.Authenticate("fletchdev712@gmail.com", "xtmx sbdk evcw bdhv");
-
-                stmp.Send(email);
-                stmp.Disconnect(true);
-            }
+            await _resend.EmailSendAsync(message);
 
             return Ok(new { Message = "Invite created and email sent." });
         }

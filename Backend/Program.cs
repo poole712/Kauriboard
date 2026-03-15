@@ -7,6 +7,7 @@ using Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using SignalWebpack.Hubs;
+using Resend;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,9 +51,19 @@ builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//Resend setup
+builder.Services.AddOptions();
+builder.Services.AddHttpClient();
+builder.Services.Configure<ResendClientOptions>(o =>
+{
+    o.ApiToken = "re_372fogUk_LBZAYPrMhZnEiSezw7veKXxp";
+});
+builder.Services.AddTransient<IResend, ResendClient>();
 
 builder.Services.AddSignalR();
 
