@@ -1,5 +1,8 @@
 import axios from "axios";
 
+// Dev base:  http://localhost:5017/api
+// Render base: https://kauriboard.onrender.com/api
+
 const instance = axios.create({
     baseURL: 'https://kauriboard.onrender.com/api',
     timeout: 30000,

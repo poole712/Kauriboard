@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { gettaskswithstatus } from '../services/authService'
 import Task from './Task'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
+import { onTaskUpdated } from '../services/signalRService'
 
 type Task = {
   id: string
@@ -23,6 +24,11 @@ function BacklogBox({ title, projId, activeId, refresh }: { title: string; projI
   }
 
   useEffect(() => {
+    onTaskUpdated('TaskUpdated', (task) => {
+      //Recieving task updated RPC
+      loadTasks()
+      console.log('Task updated: ' + task)
+    })
     async function loadTasks() {
       const response = await gettaskswithstatus(title.replace(/\s+/g, ''), projId)
       if (response.ok) setTasks(response.data)

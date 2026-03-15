@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { createtask } from '../services/authService'
+import { broadcastTaskPosted } from '../services/signalRService'
 
 type Member = {
   id: number
@@ -17,6 +18,7 @@ function CreateTask({ onShow, projId, members, refresh }: { onShow: () => void; 
   async function handleSubmit() {
     // Implement task creation logic here
     const response = await createtask(name, description, status, assignedMember!.id, projId)
+    broadcastTaskPosted("TaskPosted", name)
     console.log(assignedMember)
     if (response.ok) {
       refresh()

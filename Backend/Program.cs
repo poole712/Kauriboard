@@ -6,6 +6,7 @@ using Backend.Services;
 using Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using SignalWebpack.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,7 +54,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -61,6 +68,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapHub<NotificationHub>("/hub/Notifications");
 
 app.MapGet("/test/users", async (KauriContext db) =>
 {

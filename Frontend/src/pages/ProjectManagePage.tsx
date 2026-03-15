@@ -9,6 +9,7 @@ import { DndContext, DragOverlay, pointerWithin } from '@dnd-kit/core'
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 import ProjectMembers from '../components/ProjectMembers'
 import ProjectManageDropdown from '../components/ProjectManage'
+import { broadcastTaskUpdate, onTaskPosted } from '../services/signalRService'
 
 function ProjectManagePage() {
   const { id } = useParams() as { id: string }
@@ -47,7 +48,6 @@ function ProjectManagePage() {
     async function checkOwnership() {
       const response = await getcurrentuser()
       if (response.ok) {
-        console.log('Current user:', response.data)
         setCurrentUser(response.data)
       } else {
         console.log('Failed to get current user:', response.error)
@@ -65,6 +65,12 @@ function ProjectManagePage() {
   }
 
   useEffect(() => {
+    
+    onTaskPosted('TaskPosted', () => {
+      console.log('Task Posted (SignalR)')
+      loadProject()
+    })
+
     async function loadProject() {
       const projResponse = await getproject(id)
       if (projResponse.ok) {
@@ -94,11 +100,12 @@ function ProjectManagePage() {
       setActiveId(null)
       setActiveTask(null)
       setRefresh(prev => prev + 1)
+      broadcastTaskUpdate('TaskUpdated', {taskId: activeId, newColumn: over?.id})
     } else {
       console.log(response.error)
       setActiveId(null)
       setActiveTask(null)
-      setRefresh(prev => prev + 1)
+      //setRefresh(prev => prev + 1)
     }
   }
 
@@ -106,6 +113,7 @@ function ProjectManagePage() {
     const { active } = event
     console.log('Drag started with ID:', active.id)
     setActiveId(active.id as string)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const dragged = (active.data && (active.data as any).current && (active.data as any).current.task) || null
     setActiveTask(dragged)
   }

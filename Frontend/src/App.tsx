@@ -1,7 +1,14 @@
 import { Link } from "react-router";
 import "./App.css";
+import { useEffect } from "react";
+import { startConnection } from "./services/signalRService";
 
 function App() {
+
+  useEffect(() => {
+    startConnection();
+  }, [])
+
   return (
     <>
       <div className="kauriJumbotron p-3">

@@ -27,7 +27,6 @@ function ProjectMembers({ members, project, refresh }: { members: Member[], proj
     async function checkOwnership() {
       const response = await getcurrentuser();
       if (response.ok) {
-        console.log("Current user:", response.data);
         setCurrentUser(response.data);
       } else {
         console.log("Failed to get current user:", response.error);
