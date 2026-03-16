@@ -46,23 +46,25 @@ https://kauriboard.vercel.app/
 
 **Running Locally:**<br>
 <table>
-  <th>Backend </th>
-<th>Frontend</th>
+  <tr>
+    <th>Backend</th>
+    <th>Frontend</th>
+  </tr>
   <tr>
     <td>
-
-- cd backend
-- dotnet restore
-- dotnet ef database update
-- dotnet run
-
+      <ul>
+        <li>cd backend</li>
+        <li>dotnet restore</li>
+        <li>dotnet ef database update</li>
+        <li>dotnet run</li>
+      </ul>
     </td>
     <td>
-
-- cd frontend
-- npm install
-- npm run dev
-
+      <ul>
+        <li>cd frontend</li>
+        <li>npm install</li>
+        <li>npm run dev</li>
+      </ul>
     </td>
   </tr>
 </table>
