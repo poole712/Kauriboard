@@ -1,6 +1,7 @@
 import {  useState } from 'react'
 import { postcomment } from '../services/authService'
 import CommentContainer from './CommentContainer';
+import { broadcastCommentPosted } from '../services/signalRService';
 
 type Comment = {
   commentId: string
@@ -10,7 +11,7 @@ type Comment = {
   userId : number
 }
 
-function CommentBox({ taskId, hidden, comments, refresh }: { taskId: string; hidden: boolean; comments: Comment[]; refresh : () => void}) {
+function CommentBox({ taskId, hidden, comments }: { taskId: string; hidden: boolean; comments: Comment[]}) {
   const [newComment, setNewComment] = useState('')
   const [sendHovered, setSendHoevered] = useState(false)
 
@@ -18,7 +19,7 @@ function CommentBox({ taskId, hidden, comments, refresh }: { taskId: string; hid
   async function handleSendComment() {
     const response = await postcomment(newComment, taskId)
     console.log(response.data)
-    refresh()
+    broadcastCommentPosted("CommentPosted", newComment)
     setNewComment('')
   }
 
@@ -26,7 +27,7 @@ function CommentBox({ taskId, hidden, comments, refresh }: { taskId: string; hid
     <>
       <div className="comment-box" hidden={!hidden}>
         {comments.map(c => (
-          <CommentContainer key={c.commentId} comment={c} refresh={refresh}/>
+          <CommentContainer key={c.commentId} comment={c}/>
         ))}
         <div className="d-flex ">
           <input

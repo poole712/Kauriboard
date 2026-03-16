@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { deletecomment, getcurrentuser } from '../services/authService'
+import { broadcastCommentDeleted } from '../services/signalRService'
 
 type Comment = {
   commentId: string
@@ -16,14 +17,14 @@ type Member = {
   role: string
 }
 
-function CommentContainer({ comment, refresh }: { comment: Comment; refresh: () => void }) {
+function CommentContainer({ comment }: { comment: Comment }) {
   const [deleteHovered, setDeleteHovered] = useState(false)
   const [currentUser, setCurrentUser] = useState<Member | null>(null)
 
   async function handleDelete() {
     const response = await deletecomment(comment.commentId)
+    broadcastCommentDeleted("CommentDeleted", comment)
     console.log(response)
-    refresh()
   }
 
   useEffect(() => {
@@ -36,7 +37,7 @@ function CommentContainer({ comment, refresh }: { comment: Comment; refresh: () 
       }
     }
     checkOwnership()
-  }, [refresh])
+  }, [])
 
   return (
     <div className="comment" key={comment.commentId}>
@@ -44,7 +45,7 @@ function CommentContainer({ comment, refresh }: { comment: Comment; refresh: () 
         <p className="mx-1 m-0 text-success">{comment.name}:</p>
         <p className="comment-date">{new Date(comment.createdAt).toLocaleDateString()}</p>
       </div>
-      <p className="comment-message">{comment.message}</p>
+      <p className="comment-message">{comment.message}</p> 
       <div
         hidden={currentUser?.id != comment.userId}
         className="dropdown float-end ms-auto mx-1"

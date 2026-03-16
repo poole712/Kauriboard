@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import CommentBox from './CommentBox'
 import { getcomments } from '../services/authService'
+import { onCommentDeleted, onCommentPosted } from '../services/signalRService'
 
 type Comment = {
   commentId: string
@@ -15,16 +16,17 @@ function CommentButton({ taskId }: { taskId: string }) {
   const [isCommenting, setIsCommenting] = useState(false)
   const [comments, setComments] = useState<Comment[]>([])
 
-  async function getComments() {
-    const response = await getcomments(taskId)
-    if (response.ok) {
-      setComments(response.data)
-    } else {
-      console.log(response.error)
-    }
-  }
 
   useEffect(() => {
+    onCommentPosted("CommentPosted", (comment) => {
+      getComments()
+      console.log(comment)
+    })
+    onCommentDeleted("CommentDeleted", (comment) => {
+      getComments()
+      console.log(comment)
+    })
+
     async function getComments() {
       const response = await getcomments(taskId)
       if (response.ok) {
@@ -59,7 +61,7 @@ function CommentButton({ taskId }: { taskId: string }) {
       </div>
 
       <div hidden={!isCommenting}>
-        <CommentBox taskId={taskId} hidden={isCommenting} comments={comments} refresh={getComments} />
+        <CommentBox taskId={taskId} hidden={isCommenting} comments={comments} />
       </div>
     </div>
   )

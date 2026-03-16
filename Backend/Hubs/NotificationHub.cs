@@ -9,4 +9,10 @@ public class NotificationHub : Hub
 
     public async Task TaskPosted(object payload) =>
         await Clients.All.SendAsync("TaskPosted", payload);  
+
+    public async Task CommentPosted(object payload) => 
+        await Clients.All.SendAsync("CommentPosted", payload);
+
+    public async Task CommentDeleted(object payload) =>
+        await Clients.All.SendAsync("CommentDeleted", payload);
 }

@@ -50,3 +50,29 @@ export async function broadcastTaskPosted(method: string, payload: unknown) {
 
   return connection.invoke(method, payload)
 }
+
+export function onCommentPosted(method: string, callback: (...args : unknown[]) => void) {
+    connection.on(method, callback)
+}
+
+export async function broadcastCommentPosted(method: string, payload: unknown) {
+  if (connection.state !== signalR.HubConnectionState.Connected) {
+    console.warn("SignalR not connected yet, waiting...")
+    await startConnection()
+  }
+
+  return connection.invoke(method, payload)
+}
+
+export function onCommentDeleted(method: string, callback: (...args : unknown[]) => void) {
+    connection.on(method, callback)
+}
+
+export async function broadcastCommentDeleted(method: string, payload: unknown) {
+  if (connection.state !== signalR.HubConnectionState.Connected) {
+    console.warn("SignalR not connected yet, waiting...")
+    await startConnection()
+  }
+
+  return connection.invoke(method, payload)
+}
