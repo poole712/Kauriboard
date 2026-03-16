@@ -10,7 +10,7 @@ https://kauriboard.vercel.app/
 - Multi‑project support
 - Invite system with email verification (Resend)
 - Live collaboration between multiple users
-- Responsive UI built with Tailwind
+- Responsive UI built with Bootstrap
 - Persistent storage using PostgreSQL (Supabase)
 - Deployed frontend + backend on Vercel/Render
 
