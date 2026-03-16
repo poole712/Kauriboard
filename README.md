@@ -85,7 +85,7 @@ Azure functionality was implemented but moved to Render + Supabase because of in
   </tr>
 </table>
 
-**Environment Variables**
+**Environment Variables**<br>
 Backend
 - JWT_KEY
 - JWT_ISSUER
