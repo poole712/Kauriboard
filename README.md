@@ -25,7 +25,7 @@ https://kauriboard.vercel.app/
 - Backend:
   - .NET 8 Web API
   - Entity Framework Core
-  - PostgresSQL (Supabase)
+  - PostgresSQL
   - JWT authentication
   - SignalR
  
