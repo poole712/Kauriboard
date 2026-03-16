@@ -15,4 +15,5 @@ public class NotificationHub : Hub
 
     public async Task CommentDeleted(object payload) =>
         await Clients.All.SendAsync("CommentDeleted", payload);
+
 }

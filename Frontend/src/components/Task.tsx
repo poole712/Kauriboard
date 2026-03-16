@@ -3,6 +3,7 @@ import { useDraggable } from '@dnd-kit/core'
 import { CSS } from '@dnd-kit/utilities'
 import { deletetask, updatetask } from '../services/authService'
 import CommentButton from './CommentButton'
+import { broadcastTaskUpdate } from '../services/signalRService'
 
 function Task({
   id,
@@ -52,6 +53,7 @@ function Task({
       const response = await updatetask(Number(id), editedName, editedDescription, status || 'Unassigned')
       if (response.ok) {
         refresh()
+        broadcastTaskUpdate("TaskUpdated", (name))
       }
     }
   }
