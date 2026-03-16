@@ -15,28 +15,44 @@ https://kauriboard.vercel.app/
 - Deployed frontend + backend on Vercel/Render
 
 **Stack:**
-- Frontend:
-  - React (Vite)
-  - Typescript
-  - React Query
-  - React Router
-  - Bootstrap
-
-- Backend:
-  - .NET 8 Web API
-  - Entity Framework Core
-  - PostgresSQL
-  - JWT authentication
-  - SignalR
- 
-- Infrastructure
-  - Render (Backend)
-  - Vercel (Frontend)
-  - Supbase (Postgres Database)
+<table>
+  <tr>
+    <th>Backend</th>
+    <th>Frontend</th>
+    <th>Infrastructure</th>
+  </tr>
+  <tr>
+    <td>
+      <ul>
+        <li>.NET 8 Web API/li>
+        <li>Entity Framework Core</li>
+        <li>PostgresSQL</li>
+        <li>JWT authentication</li>
+        <li>SignalR</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>React (Vite)</li>
+        <li>Typescript</li>
+        <li>React Query</li>
+        <li>React Router</li>
+        <li>Bootstrap</li>
+      </ul>
+    </td>
+    <td>
+      <ul>
+        <li>Render (Backend)</li>
+        <li>Vercel (Frontend)</li>
+        <li>Supbase (Postgres Database)</li>
+        <li>Google OAuth (Login)</li>
+        <li>Bootstrap</li>
+      </ul>
+    </td>
+  </tr>
+</table>
     
-   (functioning but not in use (throttled))
-  - Azure App Service (API) 
-  - Azure SQL
+Azure functionality was implemented but moved to Render + Supabase because of insufficient uptimes. 
  
 **Using the app:**
 1. Go to link (https://kauriboard.vercel.app/)
