@@ -44,17 +44,28 @@ https://kauriboard.vercel.app/
 3. Create a project, click manage on it.
 4. Create tasks and drag them into appropriate status box.
 
-**Running Locally:**
-Backend:
-cd backend
-dotnet restore
-dotnet ef database update
-dotnet run
+**Running Locally:**<br>
+<table>
+  <th>Backend </th>
+<th>Frontend</th>
+  <tr>
+    <td>
 
-Frontend:
-cd frontend
-npm install
-npm run dev
+- cd backend
+- dotnet restore
+- dotnet ef database update
+- dotnet run
+
+    </td>
+    <td>
+
+- cd frontend
+- npm install
+- npm run dev
+
+    </td>
+  </tr>
+</table>
 
 **Environment Variables**
 Backend
