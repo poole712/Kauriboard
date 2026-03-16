@@ -54,7 +54,7 @@ namespace Backend.Controllers
             var inviteUrl = $"https://kauriboard.vercel.app/invite?token={token}";
 
             var message = new EmailMessage();
-            message.From = "fletchdev712.win";
+            message.From = "noreply@fletchdev712.win";
             message.To = request.Email;
             message.Subject = "KauriBoard Invitation";
             message.HtmlBody = $"<p>You have been invited to join a project on <b>KauriBoard</b>. Use the following token to accept the invite: <a href='{inviteUrl}'>Accept Invite</a></p>";
