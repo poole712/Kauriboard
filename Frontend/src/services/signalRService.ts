@@ -10,21 +10,18 @@ const connection = new signalR.HubConnectionBuilder().withUrl('https://kauriboar
 
 export async function startConnection(): Promise<void> {
   if (connection.state === signalR.HubConnectionState.Connected) {
-    return
+    return;
   }
 
   try {
-    await connection.start()
-    console.log("SignalR connected")
+    console.log("Starting SignalR connection...");
+    await connection.start();
+    console.log("SignalR connected");
   } catch (err) {
-    console.error("SignalR connection failed:", err)
+    console.error("SignalR connection failed:", err);
 
-    return new Promise(resolve => {
-      setTimeout(async () => {
-        await startConnection()
-        resolve()
-      }, 3000)
-    })
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    return startConnection(); // retry
   }
 }
 
