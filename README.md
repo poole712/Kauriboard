@@ -1,4 +1,5 @@
 # KauriBoard
+**Due to free hosting infrastructure some loading may take some time.**
 https://kauriboard.vercel.app/
 
 **Project Description:** KauriBoard is a project planning tool. KauriBoard fulfills all project teams needs by offering them a place for planning and collaboration with live updates and interactions. 
