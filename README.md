@@ -36,7 +36,6 @@ https://kauriboard.vercel.app/
       <ul>
         <li>React (Vite)</li>
         <li>Typescript</li>
-        <li>React Query</li>
         <li>React Router</li>
         <li>Bootstrap</li>
       </ul>
