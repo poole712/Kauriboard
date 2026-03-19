@@ -25,7 +25,7 @@ https://kauriboard.vercel.app/
   <tr>
     <td>
       <ul>
-        <li>.NET 8 Web API/li>
+        <li>.NET 8 Web API</li>
         <li>Entity Framework Core</li>
         <li>PostgresSQL</li>
         <li>JWT authentication</li>
