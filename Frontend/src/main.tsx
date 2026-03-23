@@ -13,9 +13,13 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import { startConnection } from './services/signalRService.ts'
 
+const root = createRoot(document.getElementById('root')!);
+
+root.render(<div className='fs-5 flex-column align-items-center align-content-center bg-light vh-100'>Connecting to backend...<img className='w-25' src='loading.webp'/></div>)
+
 //Start connection to SignalR then create React Root
 startConnection().then(() => {
-  createRoot(document.getElementById('root')!).render(
+  root.render(
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
