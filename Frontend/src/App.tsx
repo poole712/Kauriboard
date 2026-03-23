@@ -37,7 +37,7 @@ function App() {
             <div className="pt-2">
               <a className="btn btn-primary m-1" target="_blank" href="https://github.com/poole712?tab=repositories">GitHub<i className="bi bi-github px-1"></i></a>
               <a className="btn btn-primary m-1" target="_blank" href="https://fletchersgamedesign.com/">Game Portfolio<i className="bi bi-joystick px-1"></i></a>
-              <a className="btn btn-primary m-1" target="_blank" >Web Portfolio<i className="bi bi-globe2 px-1"></i></a>
+              <a className="btn btn-primary m-1" target="_blank" href="https://portfolio-opal-rho-82.vercel.app/">Web Portfolio<i className="bi bi-globe2 px-1"></i></a>
             </div>
           </div>
           <img className="profilePhoto" src="./Me.png" alt="Me" />
